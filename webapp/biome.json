@@ -1,0 +1,25 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.0.4/schema.json",
+  "files": {
+    "includes": ["src/**/*.tsx", "src/**/*.ts", "src/**/*.css"],
+    "ignoreUnknown": false
+  },
+  "linter": {
+    "enabled": true,
+    "domains": {
+      "react": "recommended",
+      "test": "recommended"
+    },
+    "rules": {
+      "recommended": true
+    }
+  },
+  "assist": {
+    "enabled": true,
+    "actions": {
+      "source": {
+        "organizeImports": "on"
+      }
+    }
+  }
+}

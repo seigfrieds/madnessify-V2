@@ -1,0 +1,5 @@
+# files ignored when making docker image
+
+dist
+node_modules
+.env*
