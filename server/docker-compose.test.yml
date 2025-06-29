@@ -1,0 +1,8 @@
+services:
+    app_test:
+        container_name: server_test
+        build:
+            context: .
+            dockerfile: Dockerfile.test
+        env_file:
+            - .env.test
