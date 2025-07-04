@@ -8,10 +8,10 @@
         "start": "node --import ./dist/src/instrument.js ./dist/src/server.js",
         "build": "rm -rf dist && tsc -p tsconfig.build.json && tsc-alias",
         "typecheck": "tsc --noEmit",
-        "lint": "eslint 'src/**/*.ts'",
-        "lint:fix": "eslint --fix 'src/**/*.ts'",
-        "format": "prettier --check 'src/**/*.ts'",
-        "format:fix": "prettier --write 'src/**/*.ts'",
+        "lint": "eslint src/**/*.ts",
+        "lint:fix": "eslint --fix src/**/*.ts",
+        "format": "prettier --check src/**/*.ts",
+        "format:fix": "prettier --write src/**/*.ts",
         "test": "vitest"
     },
     "dependencies": {
