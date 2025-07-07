@@ -1,0 +1,46 @@
+name: Unit Tests
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  unit-test-server:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run docker test container
+        working-directory: server
+        run: |
+          docker compose -f docker-compose.test.yml \
+            run \
+            --rm \
+            --build \
+            app_test \
+            npm run test:cicd
+
+  unit-test-webapp:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run docker test container
+        working-directory: webapp
+        run: |
+          docker compose -f docker-compose.test.yml \
+            run \
+            --rm \
+            --build \
+            app_test \
+            npm run test:cicd

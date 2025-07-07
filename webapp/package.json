@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "test": "vitest",
+    "test:cicd": "vitest run",
     "build": "tsc -b && vite build",
     "lint": "npx @biomejs/biome check . --formatter-enabled=false",
     "format": "npx prettier src/ --check",

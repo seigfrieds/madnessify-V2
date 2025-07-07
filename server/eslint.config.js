@@ -10,10 +10,10 @@ export default tseslint.config(
     eslint.configs.recommended,
     tseslint.configs.strictTypeChecked,
     {
+        files: ["**/*.ts"],
         languageOptions: {
             parserOptions: {
-                projectService: true,
-                tsconfigRootDir: import.meta.dirname,
+                project: "./tsconfig.json",
             },
         },
         rules: {
