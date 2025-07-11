@@ -15,7 +15,9 @@ const processEnv = {
 };
 
 // throws if the process.env does not match the schema
-envSchema.parse(processEnv);
+if (processEnv.NODE_ENV !== "test") {
+    envSchema.parse(processEnv);
+}
 
 const config = {
     ENV_IS_DEVELOPMENT: process.env.NODE_ENV === "development",

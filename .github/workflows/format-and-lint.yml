@@ -1,0 +1,48 @@
+name: Linting and Formatting
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  format-and-lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies for server
+        working-directory: server
+        run: npm ci
+
+      - name: Run formatter on server
+        working-directory: server
+        run: npm run format
+
+      - name: Run lint on server
+        working-directory: server
+        run: npm run lint
+
+      - name: Install dependencies for webapp
+        working-directory: webapp
+        run: npm ci
+
+      - name: Run formatter on webapp
+        working-directory: webapp
+        run: npm run format
+
+      - name: Run lint on webapp
+        working-directory: webapp
+        run: npm run lint
