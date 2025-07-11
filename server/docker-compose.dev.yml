@@ -1,0 +1,13 @@
+services:
+    app_dev:
+        container_name: server_dev
+        build:
+            context: .
+            dockerfile: Dockerfile.dev
+        volumes:
+            - .:/app # mount local code for hot reload
+            - /app/node_modules # DISALLOW host node_modules from overwrite docker node_modules
+        ports:
+            - "${PORT}:${PORT}"
+        env_file:
+            - .env.development

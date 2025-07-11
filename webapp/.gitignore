@@ -1,0 +1,13 @@
+.env*
+!.env.example
+
+node_modules
+dist
+
+*.sh
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
