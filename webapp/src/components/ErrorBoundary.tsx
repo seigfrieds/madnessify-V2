@@ -1,8 +1,8 @@
 import { ErrorBoundary as SentryErrorBoundary } from "@sentry/react";
 
 interface ErrorBoundaryProps {
-  fallback: React.ReactElement;
-  children: React.ReactNode;
+  readonly fallback: React.ReactElement;
+  readonly children: React.ReactNode;
 }
 
 function ErrorBoundary({ fallback, children }: ErrorBoundaryProps) {
