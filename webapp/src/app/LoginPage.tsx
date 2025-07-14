@@ -1,7 +1,7 @@
-import "./Login.scss";
+import "./LoginPage.scss";
 import MadnessifyLogo from "@/assets/MadnessifyLogo.png";
 
-function Login() {
+function LoginPage() {
   const clickLoginButton = () => {
     console.log("Logging in...");
   };
@@ -19,4 +19,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default LoginPage;
