@@ -1,4 +1,4 @@
-import "./Login.css";
+import "./Login.scss";
 import MadnessifyLogo from "@/assets/MadnessifyLogo.png";
 
 function Login() {
