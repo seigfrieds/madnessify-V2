@@ -6,6 +6,10 @@ dist
 
 *.sh
 
+# Router
+.tanstack
+routeTree.gen.ts
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

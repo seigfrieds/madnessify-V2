@@ -1,12 +1,6 @@
-html {
-  font-size: clamp(16px, calc(12px + 1.25vw), 42.5px);
-}
-
-body {
+#splash-page-content {
   background-color: black;
-}
 
-#login-page-content {
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -52,7 +46,7 @@ body {
 }
 
 @media screen and (max-width: 1200px) {
-  #login-page-content {
+  #splash-page-content {
     flex-direction: column;
 
     #logo-and-tagline-container {
