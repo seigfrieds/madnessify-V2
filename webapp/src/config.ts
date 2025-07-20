@@ -1,7 +1,7 @@
 import { z } from "zod/v4";
 
 const viteEnvSchema = z.object({
-  MODE: z.enum(["development", "production"]),
+  MODE: z.enum(["development", "test", "production"]),
   VITE_API_URL: z.url(),
   VITE_SENTRY_DSN: z.url(),
   VITE_SPOTIFY_CLIENT_ID: z.string(),
@@ -10,7 +10,9 @@ const viteEnvSchema = z.object({
 });
 
 // throws if the .env does not match the schema
-viteEnvSchema.parse(import.meta.env);
+if (import.meta.env.MODE !== "test") {
+  viteEnvSchema.parse(import.meta.env);
+}
 
 // if any of these are imported, the validation above will be run
 export const validateConfig = (): void => {};
