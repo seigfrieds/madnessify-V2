@@ -44,5 +44,14 @@
 
     border: none;
     border-radius: 10rem;
+
+    &:hover {
+      background-color: #bbbbbb;
+    }
+
+    &:active {
+      transform: scale(0.95);
+      transition: transform 0.1s ease;
+    }
   }
 }
