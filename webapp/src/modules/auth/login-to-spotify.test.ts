@@ -3,7 +3,7 @@ import { _createSpotifyLoginUrlAsync, validateSpotifyRedirect } from "./login-to
 
 const mockedConfig = vi.hoisted(() => ({
   SPOTIFY_CLIENT_ID: "Test Client ID",
-  SPOTIFY_REDIRECT_URI: "http://testurl.ca",
+  SPOTIFY_REDIRECT_URI: "https://testurl.ca",
   SPOTIFY_AUTH_SCOPE: "test scope",
 }));
 vi.mock("@/config.ts", () => ({ default: mockedConfig }));
