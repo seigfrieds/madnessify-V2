@@ -1,0 +1,70 @@
+.button-base {
+  background-color: var(--button-bg-color);
+
+  color: var(--button-text-color);
+  font-size: var(--button-font-size);
+
+  border-width: 0.05rem;
+  border-style: solid;
+  border-color: var(--button-border-color);
+  border-radius: 1.5rem;
+
+  padding-top: var(--button-padding-y);
+  padding-bottom: var(--button-padding-y);
+  padding-left: var(--button-padding-x);
+  padding-right: var(--button-padding-x);
+
+  &:hover {
+    background-color: var(--button-hover-bg-color);
+    border-color: var(--button-hover-border-color);
+    color: var(--button-hover-text-color);
+
+    transition: 0.15s;
+  }
+
+  &:active {
+    scale: 0.9;
+  }
+}
+
+.button-primary {
+  @extend .button-base;
+
+  --button-bg-color: rgba(255, 255, 255, 0.85);
+  --button-text-color: rgba(0, 0, 0, 0.9);
+  --button-border-color: rgba(255, 255, 255, 0.85);
+
+  --button-hover-bg-color: rgba(255, 255, 255, 0.5);
+  --button-hover-text-color: rgba(0, 0, 0, 0.9);
+  --button-hover-border-color: rgba(255, 255, 255, 0.5);
+}
+
+.button-secondary {
+  @extend .button-base;
+
+  --button-bg-color: transparent;
+  --button-text-color: rgba(255, 255, 255, 0.8);
+  --button-border-color: rgba(255, 255, 255, 0.8);
+
+  --button-hover-bg-color: rgba(255, 255, 255, 0.8);
+  --button-hover-text-color: black;
+  --button-hover-border-color: rgba(255, 255, 255, 0.8);
+}
+
+.size-large {
+  --button-font-size: 1rem;
+}
+
+.size-medium {
+  --button-font-size: 0.75rem;
+
+  --button-padding-y: 0.15rem;
+  --button-padding-x: 0.4rem;
+}
+
+.size-small {
+  --button-font-size: 0.5rem;
+
+  --button-padding-y: 0.1rem;
+  --button-padding-x: 0.3rem;
+}

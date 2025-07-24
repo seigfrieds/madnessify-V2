@@ -1,6 +1,99 @@
 #home-page-content {
-  height: 100vh;
-  width: 100vw;
+  width: 100%;
 
   display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  justify-content: center;
+  align-items: center;
+
+  #tabs {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .bracket-creator {
+    width: calc(100% - (2 * 1rem));
+    height: 15rem;
+
+    background-color: rgba(0, 0, 0, 0.1);
+
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+
+    border: 0.15rem solid #272727;
+    border-radius: 1.5rem;
+
+    padding: 0.85rem;
+
+    #song-count {
+      margin: 0;
+
+      color: white;
+    }
+
+    #song-search {
+      display: flex;
+      gap: 0.5rem;
+
+      #search-bar {
+        background: none;
+
+        flex-grow: 1;
+
+        border: 0.05rem solid rgba(255, 255, 255, 0.85);
+        border-radius: 1.5rem;
+
+        padding-top: 0.15rem;
+        padding-bottom: 0.15rem;
+        padding-left: 0.4rem;
+        padding-right: 0.4rem;
+
+        font-size: 0.75rem;
+
+        color: rgba(255, 255, 255, 0.8);
+      }
+    }
+
+    #songs-container {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+      overflow: auto;
+
+      .song {
+        display: flex;
+        flex-direction: row;
+        gap: 0.25rem;
+        align-items: center;
+        color: rgba(255, 255, 255, 0.85);
+
+        .song-picture {
+          width: 1.75rem;
+          height: 1.75rem;
+        }
+
+        .song-artist-and-title {
+          margin: 0;
+          font-size: 0.85rem;
+
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+
+        .song-x-button {
+          margin-left: auto;
+        }
+      }
+    }
+
+    #action-bar {
+      display: flex;
+      margin-left: auto;
+      margin-top: auto;
+    }
+  }
 }
