@@ -1,0 +1,107 @@
+dialog {
+  width: 100vw;
+  min-height: 100vh;
+
+  border: 0;
+  margin: 0;
+
+  background: linear-gradient(to bottom, #333333, #121212);
+
+  #modal-content {
+    display: flex;
+    flex-direction: column;
+
+    height: 100vh;
+
+    gap: 1rem;
+
+    padding-bottom: 1.5rem;
+
+    #modal-header {
+      display: flex;
+      justify-content: space-between;
+
+      #header-text {
+        margin: 0;
+
+        color: rgba(255, 255, 255, 0.8);
+      }
+    }
+
+    #modal-body {
+      flex: 1;
+
+      display: flex;
+      flex-direction: column;
+
+      #action-bar {
+        display: flex;
+
+        gap: 0.25rem;
+
+        justify-content: flex-start;
+      }
+
+      #bracket {
+        height: 100%;
+
+        flex: 1;
+
+        display: flex;
+
+        gap: 1rem;
+
+        .round {
+          display: flex;
+          flex-direction: column;
+          justify-content: space-around;
+
+          .match {
+            .song {
+              display: flex;
+              gap: 0.25rem;
+
+              width: 8.5rem;
+              height: 1.25rem;
+
+              background-color: var(--song-background);
+
+              .song-picture {
+                width: 1.25rem;
+                height: 1.25rem;
+              }
+
+              .song-title {
+                margin: 0;
+
+                font-size: 0.6rem;
+
+                line-height: 1.25rem;
+
+                text-overflow: ellipsis;
+                overflow: hidden;
+                white-space: nowrap;
+
+                color: var(--song-text-color);
+              }
+            }
+
+            .song-winner {
+              @extend .song;
+
+              --song-background: rgba(217, 217, 217, 0.25);
+              --song-text-color: white;
+            }
+
+            .song-loser {
+              @extend .song;
+
+              --song-background: rgba(217, 217, 217, 0.1);
+              --song-text-color: rgba(255, 255, 255, 0.5);
+            }
+          }
+        }
+      }
+    }
+  }
+}

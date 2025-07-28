@@ -28,32 +28,76 @@
 
     padding: 0.85rem;
 
-    #song-count {
-      margin: 0;
+    #song-count-and-edit-bracket {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
 
-      color: white;
+      #song-count {
+        margin: 0;
+
+        color: white;
+      }
     }
 
     #song-search {
       display: flex;
       gap: 0.5rem;
 
-      #search-bar {
-        background: none;
+      #search-bar-and-results {
+        display: flex;
+        flex-direction: column;
+
+        position: relative;
 
         flex-grow: 1;
 
-        border: 0.05rem solid rgba(255, 255, 255, 0.85);
-        border-radius: 1.5rem;
+        #search-bar {
+          background: none;
 
-        padding-top: 0.15rem;
-        padding-bottom: 0.15rem;
-        padding-left: 0.4rem;
-        padding-right: 0.4rem;
+          width: calc(100% - 2 * 0.4rem);
 
-        font-size: 0.75rem;
+          border: 0.05rem solid rgba(255, 255, 255, 0.85);
+          border-radius: 1.5rem;
 
-        color: rgba(255, 255, 255, 0.8);
+          padding-top: 0.15rem;
+          padding-bottom: 0.15rem;
+          padding-left: 0.4rem;
+          padding-right: 0.4rem;
+
+          font-size: 0.75rem;
+
+          color: rgba(255, 255, 255, 0.8);
+        }
+
+        #search-results {
+          position: absolute;
+
+          list-style-type: none;
+
+          padding: 0.5rem;
+          margin: 0;
+
+          top: 115%;
+
+          width: calc(100% - 2 * 0.5rem);
+
+          backdrop-filter: blur(500px);
+
+          border: 0.05rem solid rgba(255, 255, 255, 0.85);
+          border-radius: 0.5rem;
+
+          color: rgba(255, 255, 255, 0.8);
+
+          li {
+            font-size: 0.75rem;
+            margin: 0;
+
+            &:hover {
+              background-color: #181818;
+            }
+          }
+        }
       }
     }
 
@@ -63,25 +107,55 @@
       gap: 0.2rem;
       overflow: auto;
 
+      padding: 0;
+      margin: 0;
+
       .song {
         display: flex;
         flex-direction: row;
         gap: 0.25rem;
         align-items: center;
-        color: rgba(255, 255, 255, 0.85);
 
         .song-picture {
           width: 1.75rem;
           height: 1.75rem;
         }
 
-        .song-artist-and-title {
+        .song-title-and-artist {
+          display: flex;
+          flex-direction: column;
+
           margin: 0;
-          font-size: 0.85rem;
+
+          gap: 0.2rem;
 
           overflow: hidden;
-          white-space: nowrap;
-          text-overflow: ellipsis;
+
+          .song-title {
+            margin: 0;
+
+            font-size: 0.8rem;
+            line-height: 0.8rem;
+
+            color: rgba(255, 255, 255, 0.85);
+
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+          }
+
+          .song-artist {
+            margin: 0;
+
+            font-size: 0.55rem;
+            line-height: 0.55rem;
+
+            color: rgba(255, 255, 255, 0.7);
+
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+          }
         }
 
         .song-x-button {
@@ -90,7 +164,7 @@
       }
     }
 
-    #action-bar {
+    #bracket-creator-action-bar {
       display: flex;
       margin-left: auto;
       margin-top: auto;

@@ -1,9 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
 import "./home.scss";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Button from "@/components/Button.tsx";
 import type { Song } from "@/domain/Song.js";
 import MainLayout from "@/layouts/main.layout.tsx";
+import useDebounce from "@/hooks/use-debounce.ts";
+import { useSearchSongsQuery } from "@/services/song-service.ts";
+import useOnClickOutside from "@/hooks/use-on-click-outside.ts";
+import EditBracketModal from "@/components/EditBracketModal";
 
 export const Route = createFileRoute("/home")({
   component: HomePage,
@@ -18,80 +22,58 @@ type Tab = (typeof Tabs)[keyof typeof Tabs];
 
 function HomePage() {
   const [selectedTab, setSelectedTab] = useState<Tab>(Tabs.SEARCH_SONGS);
-  const [songs, setSongs] = useState<Song[]>([
-    {
-      id: "1",
-      title: "LIKE WEEZY",
-      mainArtistName: "Playboi Carti",
-      imageUrl: "https://i.scdn.co/image/ab67616d0000b2736b219c8d8462bfe254a20469",
-    },
-    {
-      id: "2",
-      title: "Location",
-      mainArtistName: "Playboi Carti",
-      imageUrl: "https://i.scdn.co/image/ab67616d0000b273e31a279d267f3b3d8912e6f1",
-    },
-    {
-      id: "3",
-      title: "R.I.P.",
-      mainArtistName: "Playboi Carti",
-      imageUrl: "https://i.scdn.co/image/ab67616d0000b273a1e867d40e7bb29ced5c0194",
-    },
-    {
-      id: "4",
-      title: "Vamp Anthem",
-      mainArtistName: "Playboi Carti",
-      imageUrl: "https://i.scdn.co/image/ab67616d0000b27398ea0e689c91f8fea726d9bb",
-    },
-    {
-      id: "1",
-      title: "LIKE WEEZY",
-      mainArtistName: "Playboi Carti",
-      imageUrl: "https://i.scdn.co/image/ab67616d0000b2736b219c8d8462bfe254a20469",
-    },
-    {
-      id: "2",
-      title: "Location",
-      mainArtistName: "Playboi Carti",
-      imageUrl: "https://i.scdn.co/image/ab67616d0000b273e31a279d267f3b3d8912e6f1",
-    },
-    {
-      id: "3",
-      title: "R.I.P.",
-      mainArtistName: "Playboi Carti",
-      imageUrl: "https://i.scdn.co/image/ab67616d0000b273a1e867d40e7bb29ced5c0194",
-    },
-    {
-      id: "4",
-      title: "Vamp Anthem",
-      mainArtistName: "Playboi Carti",
-      imageUrl: "https://i.scdn.co/image/ab67616d0000b27398ea0e689c91f8fea726d9bb",
-    },
-    {
-      id: "1",
-      title: "LIKE WEEZY",
-      mainArtistName: "Playboi Carti",
-      imageUrl: "https://i.scdn.co/image/ab67616d0000b2736b219c8d8462bfe254a20469",
-    },
-    {
-      id: "2",
-      title: "Location",
-      mainArtistName: "Playboi Carti",
-      imageUrl: "https://i.scdn.co/image/ab67616d0000b273e31a279d267f3b3d8912e6f1",
-    },
-    {
-      id: "3",
-      title: "R.I.P.",
-      mainArtistName: "Playboi Carti",
-      imageUrl: "https://i.scdn.co/image/ab67616d0000b273a1e867d40e7bb29ced5c0194",
-    },
-    {
-      id: "4",
-      title: "Vamp Anthem",
-      mainArtistName: "Playboi Carti",
-      imageUrl: "https://i.scdn.co/image/ab67616d0000b27398ea0e689c91f8fea726d9bb",
-    },
-  ]);
+
+  // #region Song management
+  const [songs, setSongs] = useState<Song[]>([]);
+
+  const addSong = (songToAdd: Song) => {
+    if (!songs.includes(songToAdd)) {
+      setSongs([...songs, songToAdd]);
+    }
+  };
+
+  const removeSong = (songToRemove: Song) => {
+    setSongs((prevSongs) => prevSongs.filter((song) => song !== songToRemove));
+  };
+  // #endregion
+
+  // #region Searching songs
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const handleSearchSongInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(event.target.value);
+  };
+
+  const debouncedSearchQuery = useDebounce<string>(searchQuery, 300);
+
+  const { data: searchedSongs } = useSearchSongsQuery(debouncedSearchQuery);
+  const hasSearchResults = !!searchedSongs && searchedSongs.length > 0;
+  // #endregion
+
+  // #region Search results focus
+  const [isSearchResultsVisible, setIsSearchResultsVisible] = useState<boolean>(false);
+  const showSearchResults = () => {
+    setIsSearchResultsVisible(true);
+  };
+  const hideSearchResults = () => {
+    setIsSearchResultsVisible(false);
+  };
+
+  //put all searchbar+results in ref -> if clicked outside, close
+  const searchContainerRef = useRef<HTMLDivElement>(null!);
+  useOnClickOutside(searchContainerRef, hideSearchResults);
+  // #endregion
+
+  // #region Edit Bracket modal management
+  const [isEditBracketModalOpen, setIsEditModalBracketModal] = useState<boolean>(false);
+
+  const openEditBracketModal = () => {
+    setIsEditModalBracketModal(true);
+  };
+
+  const closeEditBracketModal = () => {
+    setIsEditModalBracketModal(false);
+  };
+  // #endregion
 
   return (
     <MainLayout>
@@ -110,27 +92,60 @@ function HomePage() {
           </div>
           {selectedTab === Tabs.SEARCH_SONGS && (
             <div className="bracket-creator">
-              <p id="song-count">Songs ({songs.length})</p>
-              <div id="song-search">
-                <input id="search-bar" placeholder="Search songs..." />
-                <Button variant="secondary">Add Song</Button>
+              <div id="song-count-and-edit-bracket">
+                <p id="song-count">Songs ({songs.length})</p>
+                <Button onClick={openEditBracketModal} variant="secondary">
+                  Edit Bracket
+                </Button>
               </div>
-              <div id="songs-container">
-                {songs.map((item) => (
-                  <div className="song" key={item.id}>
-                    <img className="song-picture" src={item.imageUrl} />
-                    <p className="song-artist-and-title">
-                      {item.mainArtistName + " - " + item.title}
-                    </p>
-                    <Button className="song-x-button" size="small" variant="secondary">
+              <div id="song-search">
+                <div id="search-bar-and-results" ref={searchContainerRef}>
+                  <input
+                    id="search-bar"
+                    placeholder="Search songs..."
+                    onChange={handleSearchSongInput}
+                    onFocus={showSearchResults}
+                  />
+                  {hasSearchResults && isSearchResultsVisible && (
+                    <ul id="search-results">
+                      {searchedSongs?.map((song) => (
+                        <li
+                          onClick={() => {
+                            addSong(song);
+                            hideSearchResults();
+                          }}
+                          key={song.id}
+                        >
+                          {song.mainArtistName + " - " + song.title}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              </div>
+              <ul id="songs-container">
+                {songs.map((song) => (
+                  <li className="song" key={song.id}>
+                    <img className="song-picture" src={song.imageUrl} />
+                    <div className="song-title-and-artist">
+                      <p className="song-title">{song.title}</p>
+                      <p className="song-artist">{song.mainArtistName}</p>
+                    </div>
+                    <Button
+                      onClick={() => removeSong(song)}
+                      className="song-x-button"
+                      size="small"
+                      variant="secondary"
+                    >
                       X
                     </Button>
-                  </div>
+                  </li>
                 ))}
+              </ul>
+              <div id="bracket-creator-action-bar">
+                <Button variant="primary">Play</Button>
               </div>
-              <div id="action-bar">
-                <Button variant="primary">Submit</Button>
-              </div>
+              <EditBracketModal isOpen={isEditBracketModalOpen} onClose={closeEditBracketModal} />
             </div>
           )}
           {selectedTab === Tabs.TOP_SONGS && (
