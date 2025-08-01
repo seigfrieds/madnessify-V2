@@ -1,7 +1,7 @@
 import ErrorPage from "@/components/ErrorPage.tsx";
 import "./callback.scss";
 import { handleSpotifyCallbackAsync } from "@/modules/auth/login-to-spotify.ts";
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import { createFileRoute, Navigate } from "@tanstack/react-router";
 import { z } from "zod/v4";
 import Spinner from "@/components/Spinner.tsx";
 
@@ -16,8 +16,6 @@ export const Route = createFileRoute("/callback")({
   loaderDeps: ({ search: { code, state, error } }) => ({ code, state, error }),
   loader: async ({ deps: { code, state, error } }) => {
     await handleSpotifyCallbackAsync(state, code, error);
-
-    throw redirect({ to: "/home" });
   },
   pendingComponent: () => (
     <main id="token-loading-screen">
@@ -25,4 +23,5 @@ export const Route = createFileRoute("/callback")({
     </main>
   ),
   errorComponent: () => <ErrorPage redirectRoute="/" redirectText="Go back to Login" />,
+  component: () => <Navigate to="/home" />,
 });

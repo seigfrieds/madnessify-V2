@@ -1,3 +1,4 @@
+import Button from "./Button.tsx";
 import "./ErrorPage.scss";
 import { useRouter } from "@tanstack/react-router";
 
@@ -20,9 +21,7 @@ function ErrorPage({ redirectRoute = "/home", redirectText = "Go to Homepage" }:
           <h1 id="header">Something went wrong!</h1>
           <p id="subtitle">There was a problem processing your request. Please try again.</p>
         </div>
-        <button id="redirect-button" onClick={redirectUser} type="button">
-          {redirectText}
-        </button>
+        <Button onClick={redirectUser}>{redirectText}</Button>
       </div>
     </main>
   );
