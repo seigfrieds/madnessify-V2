@@ -96,8 +96,8 @@ function EditBracketModal({ isOpen, onClose }: Props) {
             </Button>
           </div>
           <div id="bracket-container">
-            <div id="bracket-is-32-or-less">
-              <div id="bracket-16">
+            <div id="bracket-is-over-64">
+              {/* <div id="bracket-16">
                 <div className="round">{matches16}</div>
                 <div className="round">{matches8}</div>
                 <div className="round">{matches4}</div>
@@ -120,8 +120,8 @@ function EditBracketModal({ isOpen, onClose }: Props) {
                     <p className="song-title">{sampleData[1].title}</p>
                   </div>
                 </div>
-              </div>
-              {/* <div id="bracket-32">
+              </div> */}
+              <div id="bracket-32">
                 <div className="round">{matches32}</div>
                 <div className="round">{matches16}</div>
                 <div className="round">{matches8}</div>
@@ -180,7 +180,7 @@ function EditBracketModal({ isOpen, onClose }: Props) {
                     <p className="song-title">{sampleData[1].title}</p>
                   </div>
                 </div>
-              </div> */}
+              </div>
             </div>
           </div>
         </div>
