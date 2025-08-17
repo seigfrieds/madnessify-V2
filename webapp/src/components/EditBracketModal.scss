@@ -148,6 +148,7 @@ dialog {
         }
 
         @include match();
+        @include region-size(2);
         @include region-size(4);
         @include region-size(8);
         @include region-size(16);

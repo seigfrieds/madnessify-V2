@@ -8,6 +8,7 @@ import useDebounce from "@/hooks/use-debounce.ts";
 import { useSearchSongsQuery } from "@/services/song-service.ts";
 import useOnClickOutside from "@/hooks/use-on-click-outside.ts";
 import EditBracketModal from "@/components/EditBracketModal";
+import type { Bracket } from "@/domain/Bracket.js";
 
 export const Route = createFileRoute("/home")({
   component: HomePage,
@@ -24,16 +25,23 @@ function HomePage() {
   const [selectedTab, setSelectedTab] = useState<Tab>(Tabs.SEARCH_SONGS);
 
   // #region Song management
-  const [songs, setSongs] = useState<Song[]>([]);
+  const [bracketSongs, setBracketSongs] = useState<Bracket>();
 
-  const addSong = (songToAdd: Song) => {
-    if (!songs.includes(songToAdd)) {
-      setSongs([...songs, songToAdd]);
+  const addSongToBracket = (songToAdd: Song) => {
+    if (!bracketSongs.map((song) => song.id).includes(songToAdd.id)) {
+      setBracketSongs([...bracketSongs, { ...songToAdd }]);
     }
   };
 
-  const removeSong = (songToRemove: Song) => {
-    setSongs((prevSongs) => prevSongs.filter((song) => song !== songToRemove));
+  const removeSongFromBracket = (songToRemove: Song) => {
+    setBracketSongs((prevSongs) => prevSongs.filter((song) => song !== songToRemove));
+  };
+
+  const onSwapSongs = (songIndex1: number, songIndex2: number) => {
+    const newSongs = [...bracketSongs];
+    [newSongs[songIndex1], newSongs[songIndex2]] = [newSongs[songIndex2], newSongs[songIndex1]];
+
+    setBracketSongs(newSongs);
   };
   // #endregion
 
@@ -93,7 +101,7 @@ function HomePage() {
           {selectedTab === Tabs.SEARCH_SONGS && (
             <div className="bracket-creator">
               <div id="song-count-and-edit-bracket">
-                <p id="song-count">Songs ({songs.length})</p>
+                <p id="song-count">Songs ({bracketSongs.length})</p>
                 <Button onClick={openEditBracketModal} variant="secondary">
                   Edit Bracket
                 </Button>
@@ -111,7 +119,7 @@ function HomePage() {
                       {searchedSongs?.map((song) => (
                         <li
                           onClick={() => {
-                            addSong(song);
+                            addSongToBracket(song);
                             hideSearchResults();
                           }}
                           key={song.id}
@@ -124,7 +132,7 @@ function HomePage() {
                 </div>
               </div>
               <ul id="songs-container">
-                {songs.map((song) => (
+                {bracketSongs.map((song) => (
                   <li className="song" key={song.id}>
                     <img className="song-picture" src={song.imageUrl} />
                     <div className="song-title-and-artist">
@@ -132,7 +140,7 @@ function HomePage() {
                       <p className="song-artist">{song.mainArtistName}</p>
                     </div>
                     <Button
-                      onClick={() => removeSong(song)}
+                      onClick={() => removeSongFromBracket(song)}
                       className="song-x-button"
                       size="small"
                       variant="secondary"
@@ -145,7 +153,12 @@ function HomePage() {
               <div id="bracket-creator-action-bar">
                 <Button variant="primary">Play</Button>
               </div>
-              <EditBracketModal isOpen={isEditBracketModalOpen} onClose={closeEditBracketModal} />
+              <EditBracketModal
+                songs={bracketSongs}
+                onSwapSongs={onSwapSongs}
+                isOpen={isEditBracketModalOpen}
+                onClose={closeEditBracketModal}
+              />
             </div>
           )}
           {selectedTab === Tabs.TOP_SONGS && (

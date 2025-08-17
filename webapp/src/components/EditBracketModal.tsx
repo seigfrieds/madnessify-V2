@@ -1,72 +1,73 @@
-import type { Song } from "@/domain/Song.js";
 import Button from "./Button.tsx";
 import "./EditBracketModal.scss";
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
+import type { Song } from "@/domain/Song.js";
+import type { Bracket } from "@/domain/Bracket.js";
 
-const sampleData: Song[] = [
-  {
-    id: "0",
-    title: "Bachelorette - Family Tree Version",
-    mainArtistName: "Bjork",
-    imageUrl: "https://i.scdn.co/image/ab67616d0000b27361340a8868455be0d958fb39",
-  },
-  {
-    id: "1",
-    title: "My Collection!",
-    mainArtistName: "Autumn",
-    imageUrl: "https://i.scdn.co/image/ab67616d0000b2736f2fbcc6cd529a2017f852b1",
-  },
-];
+const createBracket = (songs: Song[]) => {
+  const songsLength = songs.length;
 
-const matches2 = (
-  <>
-    <div className="match">
-      <div className="song-winner" key={sampleData[0].id}>
-        <img className="song-picture" src={sampleData[0].imageUrl} />
-        <p className="song-title">{sampleData[0].title}</p>
+  const songsGroupedIntoMatches = [];
+  for (let i = 0; i < songsLength; i += 2) {
+    songsGroupedIntoMatches.push(songs.slice(i, i + 2));
+  }
+
+  if (songsLength < 32) {
+    //2, 4, 8, 16
+    return (
+      <div id="bracket-is-32-or-less">
+        <div id={`bracket-${songsLength}`}>
+          <div className="round">
+            {songsGroupedIntoMatches.map((match, index) => (
+              <div className="match" key={index}>
+                <div className="song-winner">
+                  <img className="song-picture" src={match[0].imageUrl} />
+                  <p className="song-title">{match[0].title}</p>
+                </div>
+                <div className="song-winner">
+                  {match[1] && <img className="song-picture" src={match[1]?.imageUrl} />}
+                  <p className="song-title">{match[1]?.title ?? "BYE"}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
-      <div className="song-loser" key={sampleData[1].id}>
-        <img className="song-picture" src={sampleData[1].imageUrl} />
-        <p className="song-title">{sampleData[1].title}</p>
+    );
+  } else if (songsLength === 32) {
+    //32
+    return (
+      <div id="bracket-is-32-or-less">
+        <div id="bracket-16"></div>
+        <div id="bracket-16"></div>
+        <div id="final-match"></div>
       </div>
-    </div>
-  </>
-);
-
-const matches4 = (
-  <>
-    <>{matches2}</>
-    <>{matches2}</>
-  </>
-);
-
-const matches8 = (
-  <>
-    <>{matches4}</>
-    <>{matches4}</>
-  </>
-);
-
-const matches16 = (
-  <>
-    <>{matches8}</>
-    <>{matches8}</>
-  </>
-);
-
-const matches32 = (
-  <>
-    <>{matches16}</>
-    <>{matches16}</>
-  </>
-);
+    );
+  } else {
+    //64, 128, 256
+    return (
+      <div id="bracket-is-over-64">
+        <div id={`bracket-${songsLength / 4}`}></div>
+        <div id={`bracket-${songsLength / 4}`}></div>
+        <div id={`bracket-${songsLength / 4}`}></div>
+        <div id={`bracket-${songsLength / 4}`}></div>
+        <div id="final-four"></div>
+      </div>
+    );
+  }
+};
 
 interface Props {
+  songs: Bracket[];
+  onSwapSongs: (songIndex1: number, songIndex2: number) => void;
   isOpen: boolean;
   onClose: () => void;
 }
 
-function EditBracketModal({ isOpen, onClose }: Props) {
+function EditBracketModal({ songs, onSwapSongs, isOpen, onClose }: Props) {
+  const bracketDom = useMemo(() => createBracket(songs), [songs]);
+
+  // #region Modal opening
   const modalRef = useRef<HTMLDialogElement>(null!);
 
   useEffect(() => {
@@ -76,6 +77,7 @@ function EditBracketModal({ isOpen, onClose }: Props) {
       modalRef.current?.close();
     }
   }, [isOpen]);
+  // #endregion
 
   return (
     <dialog ref={modalRef} onClose={onClose}>
@@ -95,94 +97,7 @@ function EditBracketModal({ isOpen, onClose }: Props) {
               Shuffle
             </Button>
           </div>
-          <div id="bracket-container">
-            <div id="bracket-is-over-64">
-              {/* <div id="bracket-16">
-                <div className="round">{matches16}</div>
-                <div className="round">{matches8}</div>
-                <div className="round">{matches4}</div>
-                <div className="round">{matches2}</div>
-              </div>
-              <div id="bracket-16">
-                <div className="round">{matches2}</div>
-                <div className="round">{matches4}</div>
-                <div className="round">{matches8}</div>
-                <div className="round">{matches16}</div>
-              </div>
-              <div id="final-match">
-                <div className="match">
-                  <div className="song-winner" key={sampleData[0].id}>
-                    <img className="song-picture" src={sampleData[0].imageUrl} />
-                    <p className="song-title">{sampleData[0].title}</p>
-                  </div>
-                  <div className="song-loser" key={sampleData[1].id}>
-                    <img className="song-picture" src={sampleData[1].imageUrl} />
-                    <p className="song-title">{sampleData[1].title}</p>
-                  </div>
-                </div>
-              </div> */}
-              <div id="bracket-32">
-                <div className="round">{matches32}</div>
-                <div className="round">{matches16}</div>
-                <div className="round">{matches8}</div>
-                <div className="round">{matches4}</div>
-                <div className="round">{matches2}</div>
-              </div>
-              <div id="bracket-32">
-                <div className="round">{matches2}</div>
-                <div className="round">{matches4}</div>
-                <div className="round">{matches8}</div>
-                <div className="round">{matches16}</div>
-                <div className="round">{matches32}</div>
-              </div>
-              <div id="bracket-32">
-                <div className="round">{matches32}</div>
-                <div className="round">{matches16}</div>
-                <div className="round">{matches8}</div>
-                <div className="round">{matches4}</div>
-                <div className="round">{matches2}</div>
-              </div>
-              <div id="bracket-32">
-                <div className="round">{matches2}</div>
-                <div className="round">{matches4}</div>
-                <div className="round">{matches8}</div>
-                <div className="round">{matches16}</div>
-                <div className="round">{matches32}</div>
-              </div>
-              <div id="final-four">
-                <div className="match">
-                  <div className="song-winner" key={sampleData[0].id}>
-                    <img className="song-picture" src={sampleData[0].imageUrl} />
-                    <p className="song-title">{sampleData[0].title}</p>
-                  </div>
-                  <div className="song-loser" key={sampleData[1].id}>
-                    <img className="song-picture" src={sampleData[1].imageUrl} />
-                    <p className="song-title">{sampleData[1].title}</p>
-                  </div>
-                </div>
-                <div className="match">
-                  <div className="song-winner" key={sampleData[0].id}>
-                    <img className="song-picture" src={sampleData[0].imageUrl} />
-                    <p className="song-title">{sampleData[0].title}</p>
-                  </div>
-                  <div className="song-loser" key={sampleData[1].id}>
-                    <img className="song-picture" src={sampleData[1].imageUrl} />
-                    <p className="song-title">{sampleData[1].title}</p>
-                  </div>
-                </div>
-                <div className="match">
-                  <div className="song-winner" key={sampleData[0].id}>
-                    <img className="song-picture" src={sampleData[0].imageUrl} />
-                    <p className="song-title">{sampleData[0].title}</p>
-                  </div>
-                  <div className="song-loser" key={sampleData[1].id}>
-                    <img className="song-picture" src={sampleData[1].imageUrl} />
-                    <p className="song-title">{sampleData[1].title}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <div id="bracket-container">{bracketDom}</div>
         </div>
       </div>
     </dialog>
