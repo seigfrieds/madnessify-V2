@@ -8,7 +8,7 @@ import useDebounce from "@/hooks/use-debounce.ts";
 import { useSearchSongsQuery } from "@/services/song-service.ts";
 import useOnClickOutside from "@/hooks/use-on-click-outside.ts";
 import EditBracketModal from "@/components/EditBracketModal";
-import type { Bracket } from "@/domain/Bracket.js";
+import { createBracketFromSongs } from "@/domain/Bracket.js";
 
 export const Route = createFileRoute("/home")({
   component: HomePage,
@@ -24,16 +24,17 @@ type Tab = (typeof Tabs)[keyof typeof Tabs];
 function HomePage() {
   const [selectedTab, setSelectedTab] = useState<Tab>(Tabs.SEARCH_SONGS);
 
-  // #region Song management
-  const [bracketSongs, setBracketSongs] = useState<Bracket>();
+  // #region Bracket management
+  const [bracketSongs, setBracketSongs] = useState<Song[]>([]);
+  const bracket = createBracketFromSongs(bracketSongs);
 
-  const addSongToBracket = (songToAdd: Song) => {
-    if (!bracketSongs.map((song) => song.id).includes(songToAdd.id)) {
-      setBracketSongs([...bracketSongs, { ...songToAdd }]);
+  const addSong = (songToAdd: Song) => {
+    if (bracketSongs.filter((song) => song.id === songToAdd.id).length === 0) {
+      bracketSongs.push(songToAdd);
     }
   };
 
-  const removeSongFromBracket = (songToRemove: Song) => {
+  const removeSong = (songToRemove: Song) => {
     setBracketSongs((prevSongs) => prevSongs.filter((song) => song !== songToRemove));
   };
 
@@ -119,7 +120,7 @@ function HomePage() {
                       {searchedSongs?.map((song) => (
                         <li
                           onClick={() => {
-                            addSongToBracket(song);
+                            addSong(song);
                             hideSearchResults();
                           }}
                           key={song.id}
@@ -140,7 +141,7 @@ function HomePage() {
                       <p className="song-artist">{song.mainArtistName}</p>
                     </div>
                     <Button
-                      onClick={() => removeSongFromBracket(song)}
+                      onClick={() => removeSong(song)}
                       className="song-x-button"
                       size="small"
                       variant="secondary"
