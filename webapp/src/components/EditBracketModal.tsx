@@ -1,40 +1,38 @@
 import Button from "./Button.tsx";
 import "./EditBracketModal.scss";
 import { useEffect, useMemo, useRef } from "react";
-import type { Song } from "@/domain/Song.js";
 import type { Bracket } from "@/domain/Bracket.js";
 
-const createBracket = (songs: Song[]) => {
-  const songsLength = songs.length;
+const createBracketDom = (bracket: Bracket) => {
+  const numMatchesInFirstRound = bracket.rounds[0].matches.length;
 
-  const songsGroupedIntoMatches = [];
-  for (let i = 0; i < songsLength; i += 2) {
-    songsGroupedIntoMatches.push(songs.slice(i, i + 2));
-  }
-
-  if (songsLength < 32) {
+  if (numMatchesInFirstRound < 32) {
     //2, 4, 8, 16
     return (
       <div id="bracket-is-32-or-less">
-        <div id={`bracket-${songsLength}`}>
-          <div className="round">
-            {songsGroupedIntoMatches.map((match, index) => (
-              <div className="match" key={index}>
-                <div className="song-winner">
-                  <img className="song-picture" src={match[0].imageUrl} />
-                  <p className="song-title">{match[0].title}</p>
+        <div id={`bracket-${numMatchesInFirstRound}`}>
+          {bracket.rounds.map((round, roundIndex) => (
+            <div className="round" key={roundIndex}>
+              {round.matches.map((match, matchIndex) => (
+                <div className="match" key={matchIndex}>
+                  <div className="song-winner">
+                    <img className="song-picture" src={match.participants[0].imageUrl} />
+                    <p className="song-title">{match.participants[0].title}</p>
+                  </div>
+                  <div className="song-winner">
+                    {match.participants[1] && (
+                      <img className="song-picture" src={match.participants[1]?.imageUrl} />
+                    )}
+                    <p className="song-title">{match.participants[1]?.title ?? "BYE"}</p>
+                  </div>
                 </div>
-                <div className="song-winner">
-                  {match[1] && <img className="song-picture" src={match[1]?.imageUrl} />}
-                  <p className="song-title">{match[1]?.title ?? "BYE"}</p>
-                </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          ))}
         </div>
       </div>
     );
-  } else if (songsLength === 32) {
+  } else if (numMatchesInFirstRound === 32) {
     //32
     return (
       <div id="bracket-is-32-or-less">
@@ -58,14 +56,14 @@ const createBracket = (songs: Song[]) => {
 };
 
 interface Props {
-  songs: Bracket[];
+  bracket: Bracket;
   onSwapSongs: (songIndex1: number, songIndex2: number) => void;
   isOpen: boolean;
   onClose: () => void;
 }
 
-function EditBracketModal({ songs, onSwapSongs, isOpen, onClose }: Props) {
-  const bracketDom = useMemo(() => createBracket(songs), [songs]);
+function EditBracketModal({ bracket, onSwapSongs, isOpen, onClose }: Props) {
+  const bracketDom = useMemo(() => createBracketDom(bracket), [bracket]);
 
   // #region Modal opening
   const modalRef = useRef<HTMLDialogElement>(null!);

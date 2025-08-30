@@ -155,7 +155,7 @@ function HomePage() {
                 <Button variant="primary">Play</Button>
               </div>
               <EditBracketModal
-                songs={bracketSongs}
+                bracket={bracket}
                 onSwapSongs={onSwapSongs}
                 isOpen={isEditBracketModalOpen}
                 onClose={closeEditBracketModal}
