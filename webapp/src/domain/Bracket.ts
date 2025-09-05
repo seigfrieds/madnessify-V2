@@ -3,26 +3,21 @@ import { type Song, type Song_Id } from "./Song";
 /**
  * TYPES
  */
-export type Bracket_RoundNumber = number;
-
 export interface BracketMatch {}
 
 export interface BracketSongMatch extends BracketMatch {
-  participants: [Song | null, Song | null];
+  participants: [Song_Id | null, Song_Id | null];
   winnerId: Song_Id | null;
 }
 
 export interface BracketByeMatch extends BracketMatch {
   byeMatch: true;
-}
-
-export interface BracketRound {
-  roundNumber: Bracket_RoundNumber;
-  matches: Array<BracketMatch>;
+  winnerId: Song_Id;
 }
 
 export interface Bracket {
-  rounds: Array<BracketRound>;
+  songsInBracket: Array<Song>;
+  matches: Array<BracketMatch>;
 }
 
 /**
@@ -44,6 +39,10 @@ function nearestLowerPowerOf2(num: number): number {
   return 1 << (31 - Math.clz32(num - 1));
 }
 
+function countRounds(numberOfParticipants: number) {
+  return Math.ceil(Math.log2(numberOfParticipants));
+}
+
 export function createBracketFromSongs(songList: Song[]): Bracket {
   const requireByeRound = !isPowerOf2(songList.length);
 
@@ -53,41 +52,30 @@ export function createBracketFromSongs(songList: Song[]): Bracket {
 function createRegularBracket(songList: Song[]): Bracket {
   if (!isPowerOf2(songList.length)) throw Error("Number of songs should be a power of 2");
 
-  const bracketRounds = [];
-
-  const listOfFirstRoundMatches: BracketMatch[] = [];
+  const bracketMatches: BracketMatch[] = [];
 
   for (let i = 0; i < songList.length; i += 2) {
-    listOfFirstRoundMatches.push({
-      participants: [songList[i], songList[i + 1]],
+    bracketMatches.push({
+      participants: [songList[i].id, songList[i + 1]?.id ?? null],
       winnerId: null,
     });
   }
 
-  bracketRounds.push({
-    roundNumber: 1,
-    matches: listOfFirstRoundMatches,
-  });
-
-  for (let currRound = 2; Math.pow(2, currRound) <= songList.length; currRound++) {
+  const numberOfRounds = countRounds(songList.length);
+  for (let currRound = 2; currRound <= numberOfRounds; currRound++) {
     const numberOfCurrRoundMatches = songList.length / Math.pow(2, currRound);
-    const listOfCurrRoundMatches = [];
 
     for (let i = 0; i < numberOfCurrRoundMatches; i++) {
-      listOfCurrRoundMatches.push({
+      bracketMatches.push({
         participants: [null, null],
         winnerId: null,
       });
     }
-
-    bracketRounds.push({
-      roundNumber: currRound,
-      matches: listOfCurrRoundMatches,
-    });
   }
 
   return {
-    rounds: bracketRounds,
+    songsInBracket: songList,
+    matches: bracketMatches,
   };
 }
 
@@ -95,90 +83,78 @@ function createBracketWithByeRound(songList: Song[]): Bracket {
   if (isPowerOf2(songList.length))
     throw Error("Number of songs is a power of 2 - do not need bye round");
 
-  const bracketRounds = [];
+  const bracketMatches: (BracketSongMatch | BracketByeMatch)[] = [];
 
-  //where are we in the song list currently?
-  let songListIndex = 0;
+  //FILLING THE FIRST ROUND
+  let songListIndex = 0; //where are we in the song list currently?
+  const totalMatchesInFirstRound = Math.floor(nearestHigherPowerOf2(songList.length) / 2);
+  const numberOfFirstRoundSongMatches = songList.length - nearestLowerPowerOf2(songList.length); //e.g. if 46 teams -> 46-32 = 14 bye matches
+  const numberOfFirstRoundByeMatches = totalMatchesInFirstRound - numberOfFirstRoundSongMatches;
 
-  //FILLING THE BYE ROUND
-  const listOfByeRoundMatches: BracketMatch[] = [];
+  //fill matches with actual songs
+  for (
+    let currFirstRoundMatch = 0;
+    currFirstRoundMatch < numberOfFirstRoundSongMatches;
+    currFirstRoundMatch++, songListIndex += 2
+  ) {
+    bracketMatches.push({
+      participants: [songList[songListIndex].id, songList[songListIndex + 1].id],
+      winnerId: null,
+    });
+  }
 
-  const totalMatchesInByeRound = Math.floor(nearestHigherPowerOf2(songList.length) / 2);
-  const numberOfByeRoundMatches = songList.length - nearestLowerPowerOf2(songList.length); //e.g. if 46 teams -> 46-32 = 14 bye matches
-  const numberOfByeRoundFillerMatches = totalMatchesInByeRound - numberOfByeRoundMatches;
-
-  //fill actual bye round matches
+  //fill rest of round with bye matches
   for (
     let currByeRoundMatch = 0;
-    currByeRoundMatch < numberOfByeRoundMatches;
-    currByeRoundMatch++, songListIndex += 2
+    currByeRoundMatch < numberOfFirstRoundByeMatches;
+    currByeRoundMatch++
   ) {
-    listOfByeRoundMatches.push({
-      participants: [songList[songListIndex], songList[songListIndex + 1]],
-      winnerId: null,
-    });
-  }
-
-  //fill bye round with empty matches to finish out the round
-  for (
-    let currFillerMatch = 0;
-    currFillerMatch < numberOfByeRoundFillerMatches;
-    currFillerMatch++
-  ) {
-    listOfByeRoundMatches.push({
+    bracketMatches.push({
       byeMatch: true,
+      winnerId: songList[songListIndex++].id,
     });
   }
 
-  bracketRounds.push({
-    roundNumber: 1,
-    matches: listOfByeRoundMatches,
-  });
+  //FILLING REMAINING ROUNDS (if needed)
+  const numberOfRounds = countRounds(songList.length);
+  let numberOfMatchesInEachRound = [];
+  let indicesForStartOfEachRound = [];
 
-  //FILLING NEXT ROUND
-  const listOfNextRoundMatches: BracketMatch[] = [];
-
-  const totalMatchesInSecondRound = Math.floor(nearestLowerPowerOf2(songList.length) / 2);
-
-  let numByeRoundWinners = numberOfByeRoundMatches;
-
-  for (let currMatch = 0; currMatch < totalMatchesInSecondRound; currMatch++) {
-    const participants: [Song | null, Song | null] = [null, null];
-
-    //if there are no more bye round winners feeding in, start using songList again
-    if (numByeRoundWinners-- <= 0) participants[0] = songList[songListIndex++];
-    if (numByeRoundWinners-- <= 0) participants[1] = songList[songListIndex++];
-
-    listOfNextRoundMatches.push({
-      participants: participants,
-      winnerId: null,
-    });
+  for (let i = numberOfRounds; i >= 1; i--) {
+    numberOfMatchesInEachRound.push(Math.pow(2, i) / 2);
   }
 
-  if (listOfNextRoundMatches.length > 0) {
-    bracketRounds.push({
-      roundNumber: 2,
-      matches: listOfNextRoundMatches,
-    });
+  for (let i = 0; i < numberOfRounds; i++) {
+    indicesForStartOfEachRound.push(
+      numberOfMatchesInEachRound.reduce(
+        (acc, currVal, currIdx) => (currIdx < i ? acc + currVal : acc),
+        0,
+      ),
+    );
   }
 
-  //FILLING REMAINING ROUNDS
-  let numMatchesInRound = Math.floor(totalMatchesInSecondRound / 2);
-  let roundNumber = 3;
+  //2nd round onwards
+  for (let currRoundIndex = 1; currRoundIndex < numberOfRounds; currRoundIndex++) {
+    const numberOfMatchesInCurrRound = numberOfMatchesInEachRound[currRoundIndex];
 
-  while (numMatchesInRound > 0) {
-    bracketRounds.push({
-      roundNumber: roundNumber++,
-      matches: [...Array(numMatchesInRound)].map(() => ({
-        participants: [null, null],
+    for (
+      let currMatchInRound = 0;
+      currMatchInRound < numberOfMatchesInCurrRound;
+      currMatchInRound++
+    ) {
+      const leftIndex = indicesForStartOfEachRound[currRoundIndex - 1] + currMatchInRound * 2;
+      const rightIndex =
+        indicesForStartOfEachRound[currRoundIndex - 1] + (currMatchInRound * 2 + 1);
+
+      bracketMatches.push({
+        participants: [bracketMatches[leftIndex].winnerId, bracketMatches[rightIndex].winnerId],
         winnerId: null,
-      })),
-    });
-
-    numMatchesInRound = Math.floor(numMatchesInRound / 2);
+      });
+    }
   }
 
   return {
-    rounds: bracketRounds,
+    songsInBracket: songList,
+    matches: bracketMatches,
   };
 }
