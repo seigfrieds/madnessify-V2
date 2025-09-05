@@ -910,9 +910,4 @@ describe("bracket creation from list of songs", () => {
 
     expect(actualBracketString).toEqual(expectedBracketString);
   });
-
-  test("256 song list", () => {
-    const inputSongList: Song[] = songs.slice(0, 256);
-    throw Error(JSON.stringify(createBracketFromSongs(inputSongList)));
-  });
 });
