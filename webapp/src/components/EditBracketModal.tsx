@@ -1,70 +1,17 @@
 import Button from "./Button.tsx";
 import "./EditBracketModal.scss";
-import { useEffect, useMemo, useRef } from "react";
-import type { Bracket } from "@/domain/Bracket.js";
-
-const createBracketDom = (bracket: Bracket) => {
-  const numMatchesInFirstRound = bracket.rounds[0].matches.length;
-
-  if (numMatchesInFirstRound < 32) {
-    //2, 4, 8, 16
-    return (
-      <div id="bracket-is-32-or-less">
-        <div id={`bracket-${numMatchesInFirstRound}`}>
-          {bracket.rounds.map((round, roundIndex) => (
-            <div className="round" key={roundIndex}>
-              {round.matches.map((match, matchIndex) => (
-                <div className="match" key={matchIndex}>
-                  <div className="song-winner">
-                    <img className="song-picture" src={match.participants[0].imageUrl} />
-                    <p className="song-title">{match.participants[0].title}</p>
-                  </div>
-                  <div className="song-winner">
-                    {match.participants[1] && (
-                      <img className="song-picture" src={match.participants[1]?.imageUrl} />
-                    )}
-                    <p className="song-title">{match.participants[1]?.title ?? "BYE"}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  } else if (numMatchesInFirstRound === 32) {
-    //32
-    return (
-      <div id="bracket-is-32-or-less">
-        <div id="bracket-16"></div>
-        <div id="bracket-16"></div>
-        <div id="final-match"></div>
-      </div>
-    );
-  } else {
-    //64, 128, 256
-    return (
-      <div id="bracket-is-over-64">
-        <div id={`bracket-${songsLength / 4}`}></div>
-        <div id={`bracket-${songsLength / 4}`}></div>
-        <div id={`bracket-${songsLength / 4}`}></div>
-        <div id={`bracket-${songsLength / 4}`}></div>
-        <div id="final-four"></div>
-      </div>
-    );
-  }
-};
+import { useEffect, useRef } from "react";
+import { type Bracket as BracketType } from "@/domain/Bracket.js";
+import Bracket from "./Bracket.tsx";
 
 interface Props {
-  bracket: Bracket;
+  bracket: BracketType;
   onSwapSongs: (songIndex1: number, songIndex2: number) => void;
   isOpen: boolean;
   onClose: () => void;
 }
 
 function EditBracketModal({ bracket, onSwapSongs, isOpen, onClose }: Props) {
-  const bracketDom = useMemo(() => createBracketDom(bracket), [bracket]);
-
   // #region Modal opening
   const modalRef = useRef<HTMLDialogElement>(null!);
 
@@ -95,7 +42,9 @@ function EditBracketModal({ bracket, onSwapSongs, isOpen, onClose }: Props) {
               Shuffle
             </Button>
           </div>
-          <div id="bracket-container">{bracketDom}</div>
+          <div id="bracket-container">
+            <Bracket bracket={bracket} />
+          </div>
         </div>
       </div>
     </dialog>

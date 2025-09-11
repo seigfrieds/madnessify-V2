@@ -1,5 +1,10 @@
 import { describe, test, expect } from "vitest";
-import { createBracketFromSongs, type Bracket } from "./Bracket.ts";
+import {
+  createBracketFromSongs,
+  splitBracketIntoRounds,
+  type Bracket,
+  type BracketMatch,
+} from "./Bracket.ts";
 import type { Song } from "./Song.ts";
 
 //TODO: should this be on the frontend?
@@ -14,6 +19,210 @@ for (let i = 1; i <= 256; i++) {
     imageUrl: `songImageUrl${i}`,
   });
 }
+
+describe("splitting bracket", () => {
+  test("edge - empty bracket", () => {
+    const inputBracket: Bracket = {
+      songsInBracket: [],
+      matches: [],
+    };
+
+    const expectedRounds: BracketMatch[][] = [];
+    const actualRounds = splitBracketIntoRounds(inputBracket);
+
+    const expectedRoundsString = JSON.stringify(expectedRounds);
+    const actualRoundsString = JSON.stringify(actualRounds);
+
+    expect(actualRoundsString).toEqual(expectedRoundsString);
+  });
+
+  test("edge - 1 song bracket", () => {
+    const inputBracket: Bracket = {
+      songsInBracket: [songs[0]],
+      matches: [
+        {
+          participants: [songs[0].id, null],
+          winnerId: null,
+        },
+      ],
+    };
+
+    const expectedRounds: BracketMatch[][] = [
+      [
+        {
+          participants: [songs[0].id, null],
+          winnerId: null,
+        },
+      ],
+    ];
+    const actualRounds = splitBracketIntoRounds(inputBracket);
+
+    const expectedRoundsString = JSON.stringify(expectedRounds);
+    const actualRoundsString = JSON.stringify(actualRounds);
+
+    expect(actualRoundsString).toEqual(expectedRoundsString);
+  });
+
+  test("1 round bracket", () => {
+    const inputBracket: Bracket = {
+      songsInBracket: [songs[0], songs[1]],
+      matches: [
+        {
+          participants: [songs[0].id, songs[1].id],
+          winnerId: null,
+        },
+      ],
+    };
+
+    const expectedRounds: BracketMatch[][] = [
+      [
+        {
+          participants: [songs[0].id, songs[1].id],
+          winnerId: null,
+        },
+      ],
+    ];
+    const actualRounds = splitBracketIntoRounds(inputBracket);
+
+    const expectedRoundsString = JSON.stringify(expectedRounds);
+    const actualRoundsString = JSON.stringify(actualRounds);
+
+    expect(actualRoundsString).toEqual(expectedRoundsString);
+  });
+
+  test("2 round bracket", () => {
+    const inputBracket: Bracket = {
+      songsInBracket: [songs[0], songs[1], songs[2], songs[3]],
+      matches: [
+        {
+          participants: [songs[0].id, songs[1].id],
+          winnerId: null,
+        },
+        {
+          participants: [songs[2].id, songs[3].id],
+          winnerId: null,
+        },
+        {
+          participants: [null, null],
+          winnerId: null,
+        },
+      ],
+    };
+
+    const expectedRounds: BracketMatch[][] = [
+      [
+        {
+          participants: [songs[0].id, songs[1].id],
+          winnerId: null,
+        },
+        {
+          participants: [songs[2].id, songs[3].id],
+          winnerId: null,
+        },
+      ],
+      [
+        {
+          participants: [null, null],
+          winnerId: null,
+        },
+      ],
+    ];
+    const actualRounds = splitBracketIntoRounds(inputBracket);
+
+    const expectedRoundsString = JSON.stringify(expectedRounds);
+    const actualRoundsString = JSON.stringify(actualRounds);
+
+    expect(actualRoundsString).toEqual(expectedRoundsString);
+  });
+
+  test("3 round bracket", () => {
+    const inputBracket: Bracket = {
+      songsInBracket: [
+        songs[0],
+        songs[1],
+        songs[2],
+        songs[3],
+        songs[4],
+        songs[5],
+        songs[6],
+        songs[7],
+      ],
+      matches: [
+        {
+          participants: [songs[0].id, songs[1].id],
+          winnerId: null,
+        },
+        {
+          participants: [songs[2].id, songs[3].id],
+          winnerId: null,
+        },
+        {
+          participants: [songs[4].id, songs[5].id],
+          winnerId: null,
+        },
+        {
+          participants: [songs[6].id, songs[7].id],
+          winnerId: null,
+        },
+        {
+          participants: [null, null],
+          winnerId: null,
+        },
+        {
+          participants: [null, null],
+          winnerId: null,
+        },
+        {
+          participants: [null, null],
+          winnerId: null,
+        },
+      ],
+    };
+
+    const expectedRounds: BracketMatch[][] = [
+      [
+        {
+          participants: [songs[0].id, songs[1].id],
+          winnerId: null,
+        },
+        {
+          participants: [songs[2].id, songs[3].id],
+          winnerId: null,
+        },
+        {
+          participants: [songs[4].id, songs[5].id],
+          winnerId: null,
+        },
+        {
+          participants: [songs[6].id, songs[7].id],
+          winnerId: null,
+        },
+      ],
+      [
+        {
+          participants: [null, null],
+          winnerId: null,
+        },
+        {
+          participants: [null, null],
+          winnerId: null,
+        },
+      ],
+      [
+        {
+          participants: [null, null],
+          winnerId: null,
+        },
+      ],
+    ];
+    const actualRounds = splitBracketIntoRounds(inputBracket);
+
+    const expectedRoundsString = JSON.stringify(expectedRounds);
+    const actualRoundsString = JSON.stringify(actualRounds);
+
+    expect(actualRoundsString).toEqual(expectedRoundsString);
+  });
+});
 
 describe("bracket creation from list of songs", () => {
   test("empty song list -> empty bracket", () => {

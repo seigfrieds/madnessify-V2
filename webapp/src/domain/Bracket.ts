@@ -1,3 +1,4 @@
+import { isPowerOf2, nearestHigherPowerOf2, nearestLowerPowerOf2 } from "@/utils/math.ts";
 import { type Song, type Song_Id } from "./Song";
 
 /**
@@ -23,24 +24,34 @@ export interface Bracket {
 /**
  * OPERATIONS
  */
-function isPowerOf2(num: number): boolean {
-  return num > 0 && (num & (num - 1)) === 0;
-}
-
-function nearestHigherPowerOf2(num: number): number {
-  if (num <= 1) return 1;
-
-  return 1 << (32 - Math.clz32(num - 1));
-}
-
-function nearestLowerPowerOf2(num: number): number {
-  if (num <= 1) return 0;
-
-  return 1 << (31 - Math.clz32(num - 1));
-}
-
 function countRounds(numberOfParticipants: number) {
+  if (numberOfParticipants === 1) {
+    return 1;
+  }
+
   return Math.ceil(Math.log2(numberOfParticipants));
+}
+
+function calcNumberOfMatchesInEachRound(numberOfRounds: number) {
+  const numberOfMatchesInEachRound = [];
+
+  for (let i = numberOfRounds; i >= 1; i--) {
+    numberOfMatchesInEachRound.push(Math.pow(2, i) / 2);
+  }
+
+  return numberOfMatchesInEachRound;
+}
+
+export function splitBracketIntoRounds(bracket: Bracket): BracketMatch[][] {
+  const rounds = [];
+
+  let index = 0;
+  for (const size of calcNumberOfMatchesInEachRound(countRounds(bracket.songsInBracket.length))) {
+    rounds.push(bracket.matches.slice(index, index + size));
+    index += size;
+  }
+
+  return rounds;
 }
 
 export function createBracketFromSongs(songList: Song[]): Bracket {
@@ -117,12 +128,8 @@ function createBracketWithByeRound(songList: Song[]): Bracket {
 
   //FILLING REMAINING ROUNDS (if needed)
   const numberOfRounds = countRounds(songList.length);
-  let numberOfMatchesInEachRound = [];
+  const numberOfMatchesInEachRound = calcNumberOfMatchesInEachRound(countRounds(songList.length));
   let indicesForStartOfEachRound = [];
-
-  for (let i = numberOfRounds; i >= 1; i--) {
-    numberOfMatchesInEachRound.push(Math.pow(2, i) / 2);
-  }
 
   for (let i = 0; i < numberOfRounds; i++) {
     indicesForStartOfEachRound.push(
