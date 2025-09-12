@@ -61,7 +61,7 @@ const createBracketDom = (bracket: BracketType) => {
   if (numSongs < 32) {
     //2, 4, 8, 16
     return (
-      <div id="bracket-is-32-or-less">
+      <div id="bracket-is-32-or-less-layout">
         <div id={`bracket-${nearestHigherPowerOf2(numSongs)}`}>
           {bracketRounds.map((roundMatches, roundIndex) => (
             <div className="round" key={roundIndex}>
@@ -79,8 +79,6 @@ const createBracketDom = (bracket: BracketType) => {
       </div>
     );
   } else if (numSongs === 32) {
-    console.log(bracket);
-
     const leftRounds = bracketRounds
       .map((matches) => matches.filter((_, idx) => idx < matches.length / 2))
       .slice(0, -1);
@@ -91,7 +89,7 @@ const createBracketDom = (bracket: BracketType) => {
 
     //32
     return (
-      <div id="bracket-is-32-or-less">
+      <div id="bracket-is-32-or-less-layout">
         <div id="bracket-16">
           {leftRounds.map((roundMatches, roundIndex) => (
             <div className="round" key={roundIndex}>
@@ -151,7 +149,7 @@ const createBracketDom = (bracket: BracketType) => {
 
     //64, 128, 256
     return (
-      <div id="bracket-is-over-64">
+      <div id="bracket-is-over-64-layout">
         <div id={`bracket-${nearestHigherPowerOf2(numSongs) / 4}`}>
           {topLeftRounds.map((roundMatches, roundIndex) => (
             <div className="round" key={roundIndex}>

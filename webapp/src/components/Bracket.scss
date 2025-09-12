@@ -67,7 +67,7 @@
   }
 }
 
-#bracket-is-32-or-less {
+#bracket-is-32-or-less-layout {
   display: flex;
 
   width: min-content;
@@ -86,7 +86,7 @@
   }
 }
 
-#bracket-is-over-64 {
+#bracket-is-over-64-layout {
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 2rem 1fr;

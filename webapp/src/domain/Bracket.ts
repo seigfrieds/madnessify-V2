@@ -4,14 +4,14 @@ import { type Song, type Song_Id } from "./Song";
 /**
  * TYPES
  */
-export interface BracketMatch {}
+export type BracketMatch = BracketSongMatch | BracketByeMatch;
 
-export interface BracketSongMatch extends BracketMatch {
+export interface BracketSongMatch {
   participants: [Song_Id | null, Song_Id | null];
   winnerId: Song_Id | null;
 }
 
-export interface BracketByeMatch extends BracketMatch {
+export interface BracketByeMatch {
   byeMatch: true;
   winnerId: Song_Id;
 }
@@ -94,7 +94,7 @@ function createBracketWithByeRound(songList: Song[]): Bracket {
   if (isPowerOf2(songList.length))
     throw Error("Number of songs is a power of 2 - do not need bye round");
 
-  const bracketMatches: (BracketSongMatch | BracketByeMatch)[] = [];
+  const bracketMatches: BracketMatch[] = [];
 
   //FILLING THE FIRST ROUND
   let songListIndex = 0; //where are we in the song list currently?
