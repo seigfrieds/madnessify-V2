@@ -1,236 +1,189 @@
 import { nearestHigherPowerOf2 } from "@/utils/math.ts";
 import "./Bracket.scss";
 import {
+  isByeMatch,
   splitBracketIntoRounds,
   type BracketMatch,
   type Bracket as BracketType,
 } from "@/domain/Bracket.ts";
-import type { Song } from "@/domain/Song.ts";
+import type { Song, Song_Id } from "@/domain/Song.ts";
+import { Fragment } from "react/jsx-runtime";
 
-const createMatchDom = (match: BracketMatch, songs: Song[]) => {
-  if (!match.byeMatch) {
-    return (
-      <div className="match">
-        <div className="song-winner">
-          {match.participants[0] ? (
-            <>
-              <img
-                className="song-picture"
-                src={songs.find((song) => song.id === match.participants[0])?.imageUrl}
-              />
-              <p className="song-title">
-                {songs.find((song) => song.id === match.participants[0])?.title}
-              </p>
-            </>
-          ) : (
-            <>
-              <div className="song-picture-empty"></div>
-              <p className="song-title"></p>
-            </>
-          )}
-        </div>
-        <div className="song-winner">
-          {match.participants[1] ? (
-            <>
-              <img
-                className="song-picture"
-                src={songs.find((song) => song.id === match.participants[1])?.imageUrl}
-              />
-              <p className="song-title">
-                {songs.find((song) => song.id === match.participants[1])?.title}
-              </p>
-            </>
-          ) : (
-            <>
-              <div className="song-picture-empty"></div>
-              <p className="song-title"></p>
-            </>
-          )}
-        </div>
-      </div>
-    );
-  }
-
+const createByeMatchDom = () => {
   return <div className="bye-match"></div>;
+};
+
+const createSongMatchDom = (
+  songOne: Song | null,
+  songTwo: Song | null,
+  winnerId: Song_Id | null,
+) => {
+  const songOneIsWinner = songOne?.id === winnerId;
+  const songTwoIsWinner = songTwo?.id === winnerId;
+
+  return (
+    <div className="match">
+      {songOne ? (
+        <div className={`song-${songOneIsWinner ? "winner" : "loser"}`}>
+          <img className="song-picture" src={songOne.imageUrl} />
+          <p className="song-title">{songOne.title}</p>
+        </div>
+      ) : (
+        <div className="song-empty"></div>
+      )}
+
+      {songTwo ? (
+        <div className={`song-${songTwoIsWinner ? "winner" : "loser"}`}>
+          <img className="song-picture" src={songTwo.imageUrl} />
+          <p className="song-title">{songTwo.title}</p>
+        </div>
+      ) : (
+        <div className="song-empty"></div>
+      )}
+    </div>
+  );
 };
 
 const createBracketDom = (bracket: BracketType) => {
   const numSongs = bracket.songsInBracket.length;
   const bracketRounds = splitBracketIntoRounds(bracket);
 
-  if (numSongs < 32) {
-    //2, 4, 8, 16
+  const createMatchDom = (match: BracketMatch) => {
+    return isByeMatch(match)
+      ? createByeMatchDom()
+      : createSongMatchDom(
+          bracket.songsInBracket.find((song) => match.participants[0]?.includes(song.id)) ?? null,
+          bracket.songsInBracket.find((song) => match.participants[1]?.includes(song.id)) ?? null,
+          match.winnerId,
+        );
+  };
+
+  if (numSongs < 16) {
+    //less than 16 songs -> only have one region
+    const regionSize = Math.max(2, nearestHigherPowerOf2(numSongs));
+
     return (
       <div id="bracket-is-32-or-less-layout">
-        <div id={`bracket-${nearestHigherPowerOf2(numSongs)}`}>
+        <div id={`region-${regionSize}`}>
           {bracketRounds.map((roundMatches, roundIndex) => (
             <div className="round" key={roundIndex}>
-              {roundMatches.map((match, matchIndex) =>
-                createMatchDom(
-                  match,
-                  !match.participants
-                    ? []
-                    : bracket.songsInBracket.filter((song) => match.participants.includes(song.id)),
-                ),
-              )}
+              {roundMatches.map((match, matchIndex) => (
+                <Fragment key={matchIndex}>{createMatchDom(match)}</Fragment>
+              ))}
             </div>
           ))}
         </div>
       </div>
     );
-  } else if (numSongs === 32) {
+  } else if (numSongs <= 32) {
+    //16-32 songs -> two 16 song regions
+    //for each region, slice the last round, getting everything EXCEPT the final match
     const leftRounds = bracketRounds
       .map((matches) => matches.filter((_, idx) => idx < matches.length / 2))
       .slice(0, -1);
     const rightRounds = bracketRounds
       .map((matches) => matches.filter((_, idx) => idx >= matches.length / 2))
       .slice(0, -1);
+
+    //get the final match
     const finalRoundMatches = bracketRounds.pop();
 
-    //32
     return (
       <div id="bracket-is-32-or-less-layout">
-        <div id="bracket-16">
+        <div id="region-16">
           {leftRounds.map((roundMatches, roundIndex) => (
             <div className="round" key={roundIndex}>
-              {roundMatches.map((match, matchIndex) =>
-                createMatchDom(
-                  match,
-                  !match.participants
-                    ? []
-                    : bracket.songsInBracket.filter((song) => match.participants.includes(song.id)),
-                ),
-              )}
+              {roundMatches.map((match, matchIndex) => (
+                <Fragment key={matchIndex}>{createMatchDom(match)}</Fragment>
+              ))}
             </div>
           ))}
         </div>
-        <div id="bracket-16">
+        <div id="region-16">
           {rightRounds.reverse().map((roundMatches, roundIndex) => (
             <div className="round" key={roundIndex}>
-              {roundMatches.map((match, matchIndex) =>
-                createMatchDom(
-                  match,
-                  !match.participants
-                    ? []
-                    : bracket.songsInBracket.filter((song) => match.participants.includes(song.id)),
-                ),
-              )}
+              {roundMatches.map((match, matchIndex) => (
+                <Fragment key={matchIndex}>{createMatchDom(match)}</Fragment>
+              ))}
             </div>
           ))}
         </div>
         <div id="final-match">
           <div className="round">
-            {finalRoundMatches.map((match, matchIndex) =>
-              createMatchDom(
-                match,
-                !match.participants
-                  ? []
-                  : bracket.songsInBracket.filter((song) => match.participants.includes(song.id)),
-              ),
-            )}
+            {finalRoundMatches?.map((match, matchIndex) => (
+              <Fragment key={matchIndex}>{createMatchDom(match)}</Fragment>
+            ))}
           </div>
         </div>
       </div>
     );
   } else {
+    //>32 songs -> divide bracket into 4 regions
+    const regionSize = nearestHigherPowerOf2(numSongs) / 4;
+
+    //for each region, slice the last two rounds, since that is the final four
     const topLeftRounds = bracketRounds
       .map((matches) => matches.slice(0, matches.length / 4))
       .slice(0, -2);
-    const topRightRounds = bracketRounds
+    const bottomLeftRounds = bracketRounds
       .map((matches) => matches.slice(matches.length / 4, matches.length / 2))
       .slice(0, -2);
-    const bottomLeftRounds = bracketRounds
+    const topRightRounds = bracketRounds
       .map((matches) => matches.slice(matches.length / 2, (matches.length / 4) * 3))
       .slice(0, -2);
     const bottomRightRounds = bracketRounds
       .map((matches) => matches.slice((matches.length / 4) * 3))
       .slice(0, -2);
-    const finalRoundMatches = bracket.matches.slice(-3);
+
+    //final four is the last 3 matches
+    const finalFourMatches = bracket.matches.slice(-3);
+    const finalFourLeftRegionMatch = finalFourMatches[0];
+    const finalFourRightRegionMatch = finalFourMatches[1];
+    const finalMatch = finalFourMatches[2];
 
     //64, 128, 256
     return (
       <div id="bracket-is-over-64-layout">
-        <div id={`bracket-${nearestHigherPowerOf2(numSongs) / 4}`}>
+        <div id={`region-${regionSize}`}>
           {topLeftRounds.map((roundMatches, roundIndex) => (
             <div className="round" key={roundIndex}>
-              {roundMatches.map((match, matchIndex) =>
-                createMatchDom(
-                  match,
-                  !match.participants
-                    ? []
-                    : bracket.songsInBracket.filter((song) => match.participants.includes(song.id)),
-                ),
-              )}
+              {roundMatches.map((match, matchIndex) => (
+                <Fragment key={matchIndex}>{createMatchDom(match)}</Fragment>
+              ))}
             </div>
           ))}
         </div>
-        <div id={`bracket-${nearestHigherPowerOf2(numSongs) / 4}`}>
+        <div id={`region-${regionSize}`}>
           {topRightRounds.reverse().map((roundMatches, roundIndex) => (
             <div className="round" key={roundIndex}>
-              {roundMatches.map((match, matchIndex) =>
-                createMatchDom(
-                  match,
-                  !match.participants
-                    ? []
-                    : bracket.songsInBracket.filter((song) => match.participants.includes(song.id)),
-                ),
-              )}
+              {roundMatches.map((match, matchIndex) => (
+                <Fragment key={matchIndex}>{createMatchDom(match)}</Fragment>
+              ))}
             </div>
           ))}
         </div>
-        <div id={`bracket-${nearestHigherPowerOf2(numSongs) / 4}`}>
+        <div id={`region-${regionSize}`}>
           {bottomLeftRounds.map((roundMatches, roundIndex) => (
             <div className="round" key={roundIndex}>
-              {roundMatches.map((match, matchIndex) =>
-                createMatchDom(
-                  match,
-                  !match.participants
-                    ? []
-                    : bracket.songsInBracket.filter((song) => match.participants.includes(song.id)),
-                ),
-              )}
+              {roundMatches.map((match, matchIndex) => (
+                <Fragment key={matchIndex}>{createMatchDom(match)}</Fragment>
+              ))}
             </div>
           ))}
         </div>
-        <div id={`bracket-${nearestHigherPowerOf2(numSongs) / 4}`}>
+        <div id={`region-${regionSize}`}>
           {bottomRightRounds.reverse().map((roundMatches, roundIndex) => (
             <div className="round" key={roundIndex}>
-              {roundMatches.map((match, matchIndex) =>
-                createMatchDom(
-                  match,
-                  !match.participants
-                    ? []
-                    : bracket.songsInBracket.filter((song) => match.participants.includes(song.id)),
-                ),
-              )}
+              {roundMatches.map((match, matchIndex) => (
+                <Fragment key={matchIndex}>{createMatchDom(match)}</Fragment>
+              ))}
             </div>
           ))}
         </div>
         <div id="final-four">
-          {createMatchDom(
-            finalRoundMatches[0],
-            !finalRoundMatches[0].participants
-              ? []
-              : bracket.songsInBracket.filter((song) =>
-                  finalRoundMatches[0].participants.includes(song.id),
-                ),
-          )}
-          {createMatchDom(
-            finalRoundMatches[2],
-            !finalRoundMatches[2].participants
-              ? []
-              : bracket.songsInBracket.filter((song) =>
-                  finalRoundMatches[2].participants.includes(song.id),
-                ),
-          )}
-          {createMatchDom(
-            finalRoundMatches[1],
-            !finalRoundMatches[1].participants
-              ? []
-              : bracket.songsInBracket.filter((song) =>
-                  finalRoundMatches[1].participants.includes(song.id),
-                ),
-          )}
+          {createMatchDom(finalFourLeftRegionMatch)}
+          {createMatchDom(finalMatch)}
+          {createMatchDom(finalFourRightRegionMatch)}
         </div>
       </div>
     );

@@ -5,6 +5,13 @@
   }
 
   .match {
+    .song-empty {
+      width: 5.8rem;
+      height: 1rem;
+
+      background-color: rgba(217, 217, 217, 0.1);
+    }
+
     .song {
       display: flex;
       gap: 0.25rem;
@@ -14,8 +21,7 @@
 
       background-color: var(--song-background);
 
-      .song-picture,
-      .song-picture-empty {
+      .song-picture {
         width: 1rem;
         height: 1rem;
       }
@@ -52,7 +58,7 @@
 }
 
 @mixin region-size($numParticipants) {
-  #bracket-#{$numParticipants} {
+  #region-#{$numParticipants} {
     height: calc(#{$numParticipants} * (1rem + 0.5rem));
 
     display: flex;
@@ -109,6 +115,7 @@
 }
 
 @include match();
+@include region-size(1);
 @include region-size(2);
 @include region-size(4);
 @include region-size(8);

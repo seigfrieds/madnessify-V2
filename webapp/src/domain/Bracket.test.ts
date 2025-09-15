@@ -41,6 +41,7 @@ describe("splitting bracket", () => {
       songsInBracket: [songs[0]],
       matches: [
         {
+          byeMatch: false,
           participants: [songs[0].id, null],
           winnerId: null,
         },
@@ -50,6 +51,7 @@ describe("splitting bracket", () => {
     const expectedRounds: BracketMatch[][] = [
       [
         {
+          byeMatch: false,
           participants: [songs[0].id, null],
           winnerId: null,
         },
@@ -68,6 +70,7 @@ describe("splitting bracket", () => {
       songsInBracket: [songs[0], songs[1]],
       matches: [
         {
+          byeMatch: false,
           participants: [songs[0].id, songs[1].id],
           winnerId: null,
         },
@@ -77,6 +80,7 @@ describe("splitting bracket", () => {
     const expectedRounds: BracketMatch[][] = [
       [
         {
+          byeMatch: false,
           participants: [songs[0].id, songs[1].id],
           winnerId: null,
         },
@@ -95,14 +99,17 @@ describe("splitting bracket", () => {
       songsInBracket: [songs[0], songs[1], songs[2], songs[3]],
       matches: [
         {
+          byeMatch: false,
           participants: [songs[0].id, songs[1].id],
           winnerId: null,
         },
         {
+          byeMatch: false,
           participants: [songs[2].id, songs[3].id],
           winnerId: null,
         },
         {
+          byeMatch: false,
           participants: [null, null],
           winnerId: null,
         },
@@ -112,16 +119,19 @@ describe("splitting bracket", () => {
     const expectedRounds: BracketMatch[][] = [
       [
         {
+          byeMatch: false,
           participants: [songs[0].id, songs[1].id],
           winnerId: null,
         },
         {
+          byeMatch: false,
           participants: [songs[2].id, songs[3].id],
           winnerId: null,
         },
       ],
       [
         {
+          byeMatch: false,
           participants: [null, null],
           winnerId: null,
         },
@@ -149,30 +159,37 @@ describe("splitting bracket", () => {
       ],
       matches: [
         {
+          byeMatch: false,
           participants: [songs[0].id, songs[1].id],
           winnerId: null,
         },
         {
+          byeMatch: false,
           participants: [songs[2].id, songs[3].id],
           winnerId: null,
         },
         {
+          byeMatch: false,
           participants: [songs[4].id, songs[5].id],
           winnerId: null,
         },
         {
+          byeMatch: false,
           participants: [songs[6].id, songs[7].id],
           winnerId: null,
         },
         {
+          byeMatch: false,
           participants: [null, null],
           winnerId: null,
         },
         {
+          byeMatch: false,
           participants: [null, null],
           winnerId: null,
         },
         {
+          byeMatch: false,
           participants: [null, null],
           winnerId: null,
         },
@@ -182,34 +199,41 @@ describe("splitting bracket", () => {
     const expectedRounds: BracketMatch[][] = [
       [
         {
+          byeMatch: false,
           participants: [songs[0].id, songs[1].id],
           winnerId: null,
         },
         {
+          byeMatch: false,
           participants: [songs[2].id, songs[3].id],
           winnerId: null,
         },
         {
+          byeMatch: false,
           participants: [songs[4].id, songs[5].id],
           winnerId: null,
         },
         {
+          byeMatch: false,
           participants: [songs[6].id, songs[7].id],
           winnerId: null,
         },
       ],
       [
         {
+          byeMatch: false,
           participants: [null, null],
           winnerId: null,
         },
         {
+          byeMatch: false,
           participants: [null, null],
           winnerId: null,
         },
       ],
       [
         {
+          byeMatch: false,
           participants: [null, null],
           winnerId: null,
         },
@@ -247,6 +271,7 @@ describe("bracket creation from list of songs", () => {
       songsInBracket: inputSongList,
       matches: [
         {
+          byeMatch: false,
           participants: [songs[0].id, null],
           winnerId: null,
         },
@@ -267,6 +292,7 @@ describe("bracket creation from list of songs", () => {
       songsInBracket: inputSongList,
       matches: [
         {
+          byeMatch: false,
           participants: [songs[0].id, songs[1].id],
           winnerId: null,
         },
@@ -287,6 +313,7 @@ describe("bracket creation from list of songs", () => {
       songsInBracket: inputSongList,
       matches: [
         {
+          byeMatch: false,
           participants: [songs[0].id, songs[1].id],
           winnerId: null,
         },
@@ -295,6 +322,7 @@ describe("bracket creation from list of songs", () => {
           winnerId: songs[2].id,
         },
         {
+          byeMatch: false,
           participants: [null, songs[2].id],
           winnerId: null,
         },
@@ -315,14 +343,17 @@ describe("bracket creation from list of songs", () => {
       songsInBracket: inputSongList,
       matches: [
         {
+          byeMatch: false,
           participants: [songs[0].id, songs[1].id],
           winnerId: null,
         },
         {
+          byeMatch: false,
           participants: [songs[2].id, songs[3].id],
           winnerId: null,
         },
         {
+          byeMatch: false,
           participants: [null, null],
           winnerId: null,
         },
@@ -343,6 +374,7 @@ describe("bracket creation from list of songs", () => {
       songsInBracket: inputSongList,
       matches: [
         {
+          byeMatch: false,
           participants: [songs[0].id, songs[1].id],
           winnerId: null,
         },
@@ -359,14 +391,17 @@ describe("bracket creation from list of songs", () => {
           winnerId: songs[4].id,
         },
         {
+          byeMatch: false,
           participants: [null, songs[2].id],
           winnerId: null,
         },
         {
+          byeMatch: false,
           participants: [songs[3].id, songs[4].id],
           winnerId: null,
         },
         {
+          byeMatch: false,
           participants: [null, null],
           winnerId: null,
         },
@@ -387,10 +422,12 @@ describe("bracket creation from list of songs", () => {
       songsInBracket: inputSongList,
       matches: [
         {
+          byeMatch: false,
           participants: [songs[0].id, songs[1].id],
           winnerId: null,
         },
         {
+          byeMatch: false,
           participants: [songs[2].id, songs[3].id],
           winnerId: null,
         },
@@ -403,14 +440,17 @@ describe("bracket creation from list of songs", () => {
           winnerId: songs[5].id,
         },
         {
+          byeMatch: false,
           participants: [null, null],
           winnerId: null,
         },
         {
+          byeMatch: false,
           participants: [songs[4].id, songs[5].id],
           winnerId: null,
         },
         {
+          byeMatch: false,
           participants: [null, null],
           winnerId: null,
         },
@@ -431,14 +471,17 @@ describe("bracket creation from list of songs", () => {
       songsInBracket: inputSongList,
       matches: [
         {
+          byeMatch: false,
           participants: [songs[0].id, songs[1].id],
           winnerId: null,
         },
         {
+          byeMatch: false,
           participants: [songs[2].id, songs[3].id],
           winnerId: null,
         },
         {
+          byeMatch: false,
           participants: [songs[4].id, songs[5].id],
           winnerId: null,
         },
@@ -447,14 +490,17 @@ describe("bracket creation from list of songs", () => {
           winnerId: songs[6].id,
         },
         {
+          byeMatch: false,
           participants: [null, null],
           winnerId: null,
         },
         {
+          byeMatch: false,
           participants: [null, songs[6].id],
           winnerId: null,
         },
         {
+          byeMatch: false,
           participants: [null, null],
           winnerId: null,
         },
@@ -475,30 +521,37 @@ describe("bracket creation from list of songs", () => {
       songsInBracket: inputSongList,
       matches: [
         {
+          byeMatch: false,
           participants: [songs[0].id, songs[1].id],
           winnerId: null,
         },
         {
+          byeMatch: false,
           participants: [songs[2].id, songs[3].id],
           winnerId: null,
         },
         {
+          byeMatch: false,
           participants: [songs[4].id, songs[5].id],
           winnerId: null,
         },
         {
+          byeMatch: false,
           participants: [songs[6].id, songs[7].id],
           winnerId: null,
         },
         {
+          byeMatch: false,
           participants: [null, null],
           winnerId: null,
         },
         {
+          byeMatch: false,
           participants: [null, null],
           winnerId: null,
         },
         {
+          byeMatch: false,
           participants: [null, null],
           winnerId: null,
         },
@@ -519,6 +572,7 @@ describe("bracket creation from list of songs", () => {
       songsInBracket: inputSongList,
       matches: [
         {
+          byeMatch: false,
           participants: [songs[0].id, songs[1].id],
           winnerId: null,
         },
@@ -551,30 +605,37 @@ describe("bracket creation from list of songs", () => {
           winnerId: songs[8].id,
         },
         {
+          byeMatch: false,
           participants: [null, songs[2].id],
           winnerId: null,
         },
         {
+          byeMatch: false,
           participants: [songs[3].id, songs[4].id],
           winnerId: null,
         },
         {
+          byeMatch: false,
           participants: [songs[5].id, songs[6].id],
           winnerId: null,
         },
         {
+          byeMatch: false,
           participants: [songs[7].id, songs[8].id],
           winnerId: null,
         },
         {
+          byeMatch: false,
           participants: [null, null],
           winnerId: null,
         },
         {
+          byeMatch: false,
           participants: [null, null],
           winnerId: null,
         },
         {
+          byeMatch: false,
           participants: [null, null],
           winnerId: null,
         },
@@ -595,10 +656,12 @@ describe("bracket creation from list of songs", () => {
       songsInBracket: inputSongList,
       matches: [
         {
+          byeMatch: false,
           participants: [songs[0].id, songs[1].id],
           winnerId: null,
         },
         {
+          byeMatch: false,
           participants: [songs[2].id, songs[3].id],
           winnerId: null,
         },
@@ -627,30 +690,37 @@ describe("bracket creation from list of songs", () => {
           winnerId: songs[9].id,
         },
         {
+          byeMatch: false,
           participants: [null, null],
           winnerId: null,
         },
         {
+          byeMatch: false,
           participants: [songs[4].id, songs[5].id],
           winnerId: null,
         },
         {
+          byeMatch: false,
           participants: [songs[6].id, songs[7].id],
           winnerId: null,
         },
         {
+          byeMatch: false,
           participants: [songs[8].id, songs[9].id],
           winnerId: null,
         },
         {
+          byeMatch: false,
           participants: [null, null],
           winnerId: null,
         },
         {
+          byeMatch: false,
           participants: [null, null],
           winnerId: null,
         },
         {
+          byeMatch: false,
           participants: [null, null],
           winnerId: null,
         },
@@ -671,14 +741,17 @@ describe("bracket creation from list of songs", () => {
       songsInBracket: inputSongList,
       matches: [
         {
+          byeMatch: false,
           participants: [songs[0].id, songs[1].id],
           winnerId: null,
         },
         {
+          byeMatch: false,
           participants: [songs[2].id, songs[3].id],
           winnerId: null,
         },
         {
+          byeMatch: false,
           participants: [songs[4].id, songs[5].id],
           winnerId: null,
         },
@@ -703,30 +776,37 @@ describe("bracket creation from list of songs", () => {
           winnerId: songs[10].id,
         },
         {
+          byeMatch: false,
           participants: [null, null],
           winnerId: null,
         },
         {
+          byeMatch: false,
           participants: [null, songs[6].id],
           winnerId: null,
         },
         {
+          byeMatch: false,
           participants: [songs[7].id, songs[8].id],
           winnerId: null,
         },
         {
+          byeMatch: false,
           participants: [songs[9].id, songs[10].id],
           winnerId: null,
         },
         {
+          byeMatch: false,
           participants: [null, null],
           winnerId: null,
         },
         {
+          byeMatch: false,
           participants: [null, null],
           winnerId: null,
         },
         {
+          byeMatch: false,
           participants: [null, null],
           winnerId: null,
         },
@@ -747,21 +827,17 @@ describe("bracket creation from list of songs", () => {
       songsInBracket: inputSongList,
       matches: [
         {
+          byeMatch: false,
           participants: [songs[0].id, songs[1].id],
           winnerId: null,
         },
         {
+          byeMatch: false,
           participants: [songs[2].id, songs[3].id],
           winnerId: null,
         },
-        {
-          participants: [songs[4].id, songs[5].id],
-          winnerId: null,
-        },
-        {
-          participants: [songs[6].id, songs[7].id],
-          winnerId: null,
-        },
+        { byeMatch: false, participants: [songs[4].id, songs[5].id], winnerId: null },
+        { byeMatch: false, participants: [songs[6].id, songs[7].id], winnerId: null },
         {
           byeMatch: true,
           winnerId: songs[8].id,
@@ -778,34 +854,13 @@ describe("bracket creation from list of songs", () => {
           byeMatch: true,
           winnerId: songs[11].id,
         },
-        {
-          participants: [null, null],
-          winnerId: null,
-        },
-        {
-          participants: [null, null],
-          winnerId: null,
-        },
-        {
-          participants: [songs[8].id, songs[9].id],
-          winnerId: null,
-        },
-        {
-          participants: [songs[10].id, songs[11].id],
-          winnerId: null,
-        },
-        {
-          participants: [null, null],
-          winnerId: null,
-        },
-        {
-          participants: [null, null],
-          winnerId: null,
-        },
-        {
-          participants: [null, null],
-          winnerId: null,
-        },
+        { byeMatch: false, participants: [null, null], winnerId: null },
+        { byeMatch: false, participants: [null, null], winnerId: null },
+        { byeMatch: false, participants: [songs[8].id, songs[9].id], winnerId: null },
+        { byeMatch: false, participants: [songs[10].id, songs[11].id], winnerId: null },
+        { byeMatch: false, participants: [null, null], winnerId: null },
+        { byeMatch: false, participants: [null, null], winnerId: null },
+        { byeMatch: false, participants: [null, null], winnerId: null },
       ],
     };
     const actualBracket = createBracketFromSongs(inputSongList);
@@ -822,26 +877,11 @@ describe("bracket creation from list of songs", () => {
     const expectedBracket: Bracket = {
       songsInBracket: inputSongList,
       matches: [
-        {
-          participants: [songs[0].id, songs[1].id],
-          winnerId: null,
-        },
-        {
-          participants: [songs[2].id, songs[3].id],
-          winnerId: null,
-        },
-        {
-          participants: [songs[4].id, songs[5].id],
-          winnerId: null,
-        },
-        {
-          participants: [songs[6].id, songs[7].id],
-          winnerId: null,
-        },
-        {
-          participants: [songs[8].id, songs[9].id],
-          winnerId: null,
-        },
+        { byeMatch: false, participants: [songs[0].id, songs[1].id], winnerId: null },
+        { byeMatch: false, participants: [songs[2].id, songs[3].id], winnerId: null },
+        { byeMatch: false, participants: [songs[4].id, songs[5].id], winnerId: null },
+        { byeMatch: false, participants: [songs[6].id, songs[7].id], winnerId: null },
+        { byeMatch: false, participants: [songs[8].id, songs[9].id], winnerId: null },
         {
           byeMatch: true,
           winnerId: songs[10].id,
@@ -854,34 +894,13 @@ describe("bracket creation from list of songs", () => {
           byeMatch: true,
           winnerId: songs[12].id,
         },
-        {
-          participants: [null, null],
-          winnerId: null,
-        },
-        {
-          participants: [null, null],
-          winnerId: null,
-        },
-        {
-          participants: [null, songs[10].id],
-          winnerId: null,
-        },
-        {
-          participants: [songs[11].id, songs[12].id],
-          winnerId: null,
-        },
-        {
-          participants: [null, null],
-          winnerId: null,
-        },
-        {
-          participants: [null, null],
-          winnerId: null,
-        },
-        {
-          participants: [null, null],
-          winnerId: null,
-        },
+        { byeMatch: false, participants: [null, null], winnerId: null },
+        { byeMatch: false, participants: [null, null], winnerId: null },
+        { byeMatch: false, participants: [null, songs[10].id], winnerId: null },
+        { byeMatch: false, participants: [songs[11].id, songs[12].id], winnerId: null },
+        { byeMatch: false, participants: [null, null], winnerId: null },
+        { byeMatch: false, participants: [null, null], winnerId: null },
+        { byeMatch: false, participants: [null, null], winnerId: null },
       ],
     };
     const actualBracket = createBracketFromSongs(inputSongList);
@@ -898,30 +917,12 @@ describe("bracket creation from list of songs", () => {
     const expectedBracket: Bracket = {
       songsInBracket: inputSongList,
       matches: [
-        {
-          participants: [songs[0].id, songs[1].id],
-          winnerId: null,
-        },
-        {
-          participants: [songs[2].id, songs[3].id],
-          winnerId: null,
-        },
-        {
-          participants: [songs[4].id, songs[5].id],
-          winnerId: null,
-        },
-        {
-          participants: [songs[6].id, songs[7].id],
-          winnerId: null,
-        },
-        {
-          participants: [songs[8].id, songs[9].id],
-          winnerId: null,
-        },
-        {
-          participants: [songs[10].id, songs[11].id],
-          winnerId: null,
-        },
+        { byeMatch: false, participants: [songs[0].id, songs[1].id], winnerId: null },
+        { byeMatch: false, participants: [songs[2].id, songs[3].id], winnerId: null },
+        { byeMatch: false, participants: [songs[4].id, songs[5].id], winnerId: null },
+        { byeMatch: false, participants: [songs[6].id, songs[7].id], winnerId: null },
+        { byeMatch: false, participants: [songs[8].id, songs[9].id], winnerId: null },
+        { byeMatch: false, participants: [songs[10].id, songs[11].id], winnerId: null },
         {
           byeMatch: true,
           winnerId: songs[12].id,
@@ -930,34 +931,13 @@ describe("bracket creation from list of songs", () => {
           byeMatch: true,
           winnerId: songs[13].id,
         },
-        {
-          participants: [null, null],
-          winnerId: null,
-        },
-        {
-          participants: [null, null],
-          winnerId: null,
-        },
-        {
-          participants: [null, null],
-          winnerId: null,
-        },
-        {
-          participants: [songs[12].id, songs[13].id],
-          winnerId: null,
-        },
-        {
-          participants: [null, null],
-          winnerId: null,
-        },
-        {
-          participants: [null, null],
-          winnerId: null,
-        },
-        {
-          participants: [null, null],
-          winnerId: null,
-        },
+        { byeMatch: false, participants: [null, null], winnerId: null },
+        { byeMatch: false, participants: [null, null], winnerId: null },
+        { byeMatch: false, participants: [null, null], winnerId: null },
+        { byeMatch: false, participants: [songs[12].id, songs[13].id], winnerId: null },
+        { byeMatch: false, participants: [null, null], winnerId: null },
+        { byeMatch: false, participants: [null, null], winnerId: null },
+        { byeMatch: false, participants: [null, null], winnerId: null },
       ],
     };
     const actualBracket = createBracketFromSongs(inputSongList);
@@ -974,66 +954,24 @@ describe("bracket creation from list of songs", () => {
     const expectedBracket: Bracket = {
       songsInBracket: inputSongList,
       matches: [
-        {
-          participants: [songs[0].id, songs[1].id],
-          winnerId: null,
-        },
-        {
-          participants: [songs[2].id, songs[3].id],
-          winnerId: null,
-        },
-        {
-          participants: [songs[4].id, songs[5].id],
-          winnerId: null,
-        },
-        {
-          participants: [songs[6].id, songs[7].id],
-          winnerId: null,
-        },
-        {
-          participants: [songs[8].id, songs[9].id],
-          winnerId: null,
-        },
-        {
-          participants: [songs[10].id, songs[11].id],
-          winnerId: null,
-        },
-        {
-          participants: [songs[12].id, songs[13].id],
-          winnerId: null,
-        },
+        { byeMatch: false, participants: [songs[0].id, songs[1].id], winnerId: null },
+        { byeMatch: false, participants: [songs[2].id, songs[3].id], winnerId: null },
+        { byeMatch: false, participants: [songs[4].id, songs[5].id], winnerId: null },
+        { byeMatch: false, participants: [songs[6].id, songs[7].id], winnerId: null },
+        { byeMatch: false, participants: [songs[8].id, songs[9].id], winnerId: null },
+        { byeMatch: false, participants: [songs[10].id, songs[11].id], winnerId: null },
+        { byeMatch: false, participants: [songs[12].id, songs[13].id], winnerId: null },
         {
           byeMatch: true,
           winnerId: songs[14].id,
         },
-        {
-          participants: [null, null],
-          winnerId: null,
-        },
-        {
-          participants: [null, null],
-          winnerId: null,
-        },
-        {
-          participants: [null, null],
-          winnerId: null,
-        },
-        {
-          participants: [null, songs[14].id],
-          winnerId: null,
-        },
-        {
-          participants: [null, null],
-          winnerId: null,
-        },
-        {
-          participants: [null, null],
-          winnerId: null,
-        },
-        {
-          participants: [null, null],
-          winnerId: null,
-        },
+        { byeMatch: false, participants: [null, null], winnerId: null },
+        { byeMatch: false, participants: [null, null], winnerId: null },
+        { byeMatch: false, participants: [null, null], winnerId: null },
+        { byeMatch: false, participants: [null, songs[14].id], winnerId: null },
+        { byeMatch: false, participants: [null, null], winnerId: null },
+        { byeMatch: false, participants: [null, null], winnerId: null },
+        { byeMatch: false, participants: [null, null], winnerId: null },
       ],
     };
     const actualBracket = createBracketFromSongs(inputSongList);
@@ -1050,63 +988,22 @@ describe("bracket creation from list of songs", () => {
     const expectedBracket: Bracket = {
       songsInBracket: inputSongList,
       matches: [
+        { byeMatch: false, participants: [songs[0].id, songs[1].id], winnerId: null },
+        { byeMatch: false, participants: [songs[2].id, songs[3].id], winnerId: null },
+        { byeMatch: false, participants: [songs[4].id, songs[5].id], winnerId: null },
+        { byeMatch: false, participants: [songs[6].id, songs[7].id], winnerId: null },
+        { byeMatch: false, participants: [songs[8].id, songs[9].id], winnerId: null },
+        { byeMatch: false, participants: [songs[10].id, songs[11].id], winnerId: null },
+        { byeMatch: false, participants: [songs[12].id, songs[13].id], winnerId: null },
+        { byeMatch: false, participants: [songs[14].id, songs[15].id], winnerId: null },
+        { byeMatch: false, participants: [null, null], winnerId: null },
+        { byeMatch: false, participants: [null, null], winnerId: null },
+        { byeMatch: false, participants: [null, null], winnerId: null },
+        { byeMatch: false, participants: [null, null], winnerId: null },
+        { byeMatch: false, participants: [null, null], winnerId: null },
+        { byeMatch: false, participants: [null, null], winnerId: null },
         {
-          participants: [songs[0].id, songs[1].id],
-          winnerId: null,
-        },
-        {
-          participants: [songs[2].id, songs[3].id],
-          winnerId: null,
-        },
-        {
-          participants: [songs[4].id, songs[5].id],
-          winnerId: null,
-        },
-        {
-          participants: [songs[6].id, songs[7].id],
-          winnerId: null,
-        },
-        {
-          participants: [songs[8].id, songs[9].id],
-          winnerId: null,
-        },
-        {
-          participants: [songs[10].id, songs[11].id],
-          winnerId: null,
-        },
-        {
-          participants: [songs[12].id, songs[13].id],
-          winnerId: null,
-        },
-        {
-          participants: [songs[14].id, songs[15].id],
-          winnerId: null,
-        },
-        {
-          participants: [null, null],
-          winnerId: null,
-        },
-        {
-          participants: [null, null],
-          winnerId: null,
-        },
-        {
-          participants: [null, null],
-          winnerId: null,
-        },
-        {
-          participants: [null, null],
-          winnerId: null,
-        },
-        {
-          participants: [null, null],
-          winnerId: null,
-        },
-        {
-          participants: [null, null],
-          winnerId: null,
-        },
-        {
+          byeMatch: false,
           participants: [null, null],
           winnerId: null,
         },

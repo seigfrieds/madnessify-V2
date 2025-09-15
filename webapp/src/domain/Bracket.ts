@@ -7,6 +7,7 @@ import { type Song, type Song_Id } from "./Song";
 export type BracketMatch = BracketSongMatch | BracketByeMatch;
 
 export interface BracketSongMatch {
+  byeMatch: false;
   participants: [Song_Id | null, Song_Id | null];
   winnerId: Song_Id | null;
 }
@@ -24,6 +25,10 @@ export interface Bracket {
 /**
  * OPERATIONS
  */
+export function isByeMatch(match: BracketMatch) {
+  return !!match.byeMatch;
+}
+
 function countRounds(numberOfParticipants: number) {
   if (numberOfParticipants === 1) {
     return 1;
@@ -67,6 +72,7 @@ function createRegularBracket(songList: Song[]): Bracket {
 
   for (let i = 0; i < songList.length; i += 2) {
     bracketMatches.push({
+      byeMatch: false,
       participants: [songList[i].id, songList[i + 1]?.id ?? null],
       winnerId: null,
     });
@@ -78,6 +84,7 @@ function createRegularBracket(songList: Song[]): Bracket {
 
     for (let i = 0; i < numberOfCurrRoundMatches; i++) {
       bracketMatches.push({
+        byeMatch: false,
         participants: [null, null],
         winnerId: null,
       });
@@ -109,6 +116,7 @@ function createBracketWithByeRound(songList: Song[]): Bracket {
     currFirstRoundMatch++, songListIndex += 2
   ) {
     bracketMatches.push({
+      byeMatch: false,
       participants: [songList[songListIndex].id, songList[songListIndex + 1].id],
       winnerId: null,
     });
@@ -154,6 +162,7 @@ function createBracketWithByeRound(songList: Song[]): Bracket {
         indicesForStartOfEachRound[currRoundIndex - 1] + (currMatchInRound * 2 + 1);
 
       bracketMatches.push({
+        byeMatch: false,
         participants: [bracketMatches[leftIndex].winnerId, bracketMatches[rightIndex].winnerId],
         winnerId: null,
       });
