@@ -1,22 +1,25 @@
-import "./Button.scss";
+import styles from "./Button.module.scss";
 
 interface Props {
   onClick?: () => void;
   children?: React.ReactNode;
-  variant?: "primary" | "secondary";
-  size?: "large" | "medium" | "small";
+  variant?: "Primary" | "Secondary";
+  size?: "Large" | "Medium" | "Small";
   className?: string;
 }
 
 function Button({
   onClick,
   children,
-  variant = "primary",
-  size = "medium",
+  variant = "Primary",
+  size = "Medium",
   className = "",
 }: Props) {
   return (
-    <button onClick={onClick} className={`button-${variant} size-${size} ${className}`}>
+    <button
+      onClick={onClick}
+      className={styles[`button${variant}`] + " " + styles[`size${size}`] + " " + `${className}`}
+    >
       {children}
     </button>
   );

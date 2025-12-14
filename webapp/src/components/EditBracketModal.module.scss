@@ -9,7 +9,7 @@ dialog {
 
   background: linear-gradient(to bottom, #333333, #121212);
 
-  #modal-content {
+  .modalContent {
     display: flex;
     flex-direction: column;
 
@@ -17,22 +17,22 @@ dialog {
 
     padding-bottom: 1.5rem;
 
-    #modal-header {
+    .modalHeader {
       display: flex;
       gap: 0.5rem;
       align-items: center;
 
-      #header-text {
+      .headerText {
         margin: 0;
 
         color: rgba(255, 255, 255, 0.8);
       }
     }
 
-    #modal-body {
+    .modalBody {
       flex: 1;
 
-      #action-bar {
+      .actionBar {
         display: flex;
 
         gap: 0.25rem;
@@ -40,7 +40,7 @@ dialog {
         justify-content: flex-start;
       }
 
-      #bracket-container {
+      .bracketContainer {
         overflow: auto;
       }
     }

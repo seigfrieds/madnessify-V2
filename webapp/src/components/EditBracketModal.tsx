@@ -1,17 +1,31 @@
 import Button from "./Button.tsx";
-import "./EditBracketModal.scss";
-import { useEffect, useRef } from "react";
-import { type Bracket as BracketType } from "@/domain/Bracket.js";
+import styles from "./EditBracketModal.module.scss";
+import { useEffect, useRef, useState } from "react";
+import { createBracketFromSongs, type Bracket as BracketType } from "@/domain/Bracket.js";
 import Bracket from "./Bracket.tsx";
+import { shuffleArray } from "@/utils/array.ts";
 
 interface Props {
   bracket: BracketType;
-  onSwapSongs: (songIndex1: number, songIndex2: number) => void;
   isOpen: boolean;
   onClose: () => void;
 }
 
-function EditBracketModal({ bracket, onSwapSongs, isOpen, onClose }: Props) {
+function EditBracketModal({ bracket, isOpen, onClose }: Props) {
+  // #region Bracket management
+  const [localBracket, setLocalBracket] = useState<BracketType>(
+    createBracketFromSongs(bracket.songsInBracket),
+  );
+
+  useEffect(() => {
+    setLocalBracket(createBracketFromSongs(bracket.songsInBracket));
+  }, [bracket]);
+
+  const onShuffle = () => {
+    setLocalBracket(createBracketFromSongs(shuffleArray(localBracket.songsInBracket)));
+  };
+  // #endregion
+
   // #region Modal opening
   const modalRef = useRef<HTMLDialogElement>(null!);
 
@@ -26,24 +40,21 @@ function EditBracketModal({ bracket, onSwapSongs, isOpen, onClose }: Props) {
 
   return (
     <dialog ref={modalRef} onClose={onClose}>
-      <div id="modal-content">
-        <div id="modal-header">
-          <Button onClick={onClose} variant="secondary" size="small">
+      <div className={styles.modalContent}>
+        <div className={styles.modalHeader}>
+          <Button onClick={onClose} variant="Secondary" size="Small">
             X
           </Button>
-          <p id="header-text">Edit Bracket</p>
+          <p className={styles.headerText}>Edit Bracket</p>
         </div>
-        <div id="modal-body">
-          <div id="action-bar">
-            <Button variant="secondary" size="small">
-              ?
-            </Button>
-            <Button variant="secondary" size="small">
+        <div className={styles.modalBody}>
+          <div className={styles.actionBar}>
+            <Button onClick={onShuffle} variant="Secondary" size="Small">
               Shuffle
             </Button>
           </div>
-          <div id="bracket-container">
-            <Bracket bracket={bracket} />
+          <div className={styles.bracketContainer}>
+            <Bracket bracket={localBracket} />
           </div>
         </div>
       </div>

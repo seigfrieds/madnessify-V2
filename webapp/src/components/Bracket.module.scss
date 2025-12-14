@@ -1,11 +1,11 @@
 @mixin match() {
-  .bye-match {
+  .byeMatch {
     height: 2rem;
     width: 5.8rem;
   }
 
   .match {
-    .song-empty {
+    .songEmpty {
       width: 5.8rem;
       height: 1rem;
 
@@ -21,12 +21,12 @@
 
       background-color: var(--song-background);
 
-      .song-picture {
+      .songPicture {
         width: 1rem;
         height: 1rem;
       }
 
-      .song-title {
+      .songTitle {
         margin: 0;
 
         font-size: 0.5rem;
@@ -41,14 +41,14 @@
       }
     }
 
-    .song-winner {
+    .songWinner {
       @extend .song;
 
       --song-background: rgba(217, 217, 217, 0.25);
       --song-text-color: white;
     }
 
-    .song-loser {
+    .songLoser {
       @extend .song;
 
       --song-background: rgba(217, 217, 217, 0.1);
@@ -58,7 +58,7 @@
 }
 
 @mixin region-size($numParticipants) {
-  #region-#{$numParticipants} {
+  .region#{$numParticipants} {
     height: calc(#{$numParticipants} * (1rem + 0.5rem));
 
     display: flex;
@@ -73,7 +73,7 @@
   }
 }
 
-#bracket-is-32-or-less-layout {
+.bracketIs32OrLessLayout {
   display: flex;
 
   width: min-content;
@@ -82,7 +82,7 @@
 
   position: relative;
 
-  #final-match {
+  .finalMatch {
     position: absolute;
 
     top: 38%;
@@ -92,7 +92,7 @@
   }
 }
 
-#bracket-is-over-64-layout {
+.bracketIsOver64Layout {
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 2rem 1fr;
@@ -104,7 +104,7 @@
 
   justify-items: center;
 
-  #final-four {
+  .finalFour {
     grid-column: 1 / span 2;
 
     grid-row: 2 / span 1;

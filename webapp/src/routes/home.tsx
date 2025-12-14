@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import "./home.scss";
+import styles from "./home.module.scss";
 import { useRef, useState } from "react";
 import Button from "@/components/Button.tsx";
 import type { Song } from "@/domain/Song.js";
@@ -17,7 +17,6 @@ export const Route = createFileRoute("/home")({
 const Tabs = {
   SEARCH_SONGS: 1,
   TOP_SONGS: 2,
-  PLAYLIST: 3,
 } as const;
 type Tab = (typeof Tabs)[keyof typeof Tabs];
 
@@ -36,13 +35,6 @@ function HomePage() {
 
   const removeSong = (songToRemove: Song) => {
     setBracketSongs((prevSongs) => prevSongs.filter((song) => song !== songToRemove));
-  };
-
-  const onSwapSongs = (songIndex1: number, songIndex2: number) => {
-    const newSongs = [...bracketSongs];
-    [newSongs[songIndex1], newSongs[songIndex2]] = [newSongs[songIndex2], newSongs[songIndex1]];
-
-    setBracketSongs(newSongs);
   };
   // #endregion
 
@@ -87,36 +79,33 @@ function HomePage() {
   return (
     <MainLayout>
       <MainLayout.Content>
-        <div id="home-page-content">
-          <div id="tabs">
-            <Button onClick={() => setSelectedTab(Tabs.SEARCH_SONGS)} variant="secondary">
+        <div className={styles.pageContent}>
+          <div className={styles.tabs}>
+            <Button onClick={() => setSelectedTab(Tabs.SEARCH_SONGS)} variant="Secondary">
               Search songs
             </Button>
-            <Button onClick={() => setSelectedTab(Tabs.TOP_SONGS)} variant="secondary">
+            <Button onClick={() => setSelectedTab(Tabs.TOP_SONGS)} variant="Secondary">
               Top songs
-            </Button>
-            <Button onClick={() => setSelectedTab(Tabs.PLAYLIST)} variant="secondary">
-              Playlist
             </Button>
           </div>
           {selectedTab === Tabs.SEARCH_SONGS && (
-            <div className="bracket-creator">
-              <div id="song-count-and-edit-bracket">
-                <p id="song-count">Songs ({bracketSongs.length})</p>
-                <Button onClick={openEditBracketModal} variant="secondary">
+            <div className={styles.bracketCreator}>
+              <div className={styles.songCountAndEditBracket}>
+                <p className={styles.songCount}>Songs ({bracketSongs.length})</p>
+                <Button onClick={openEditBracketModal} variant="Secondary">
                   Edit Bracket
                 </Button>
               </div>
-              <div id="song-search">
-                <div id="search-bar-and-results" ref={searchContainerRef}>
+              <div className={styles.songSearch}>
+                <div className={styles.searchBarAndResults} ref={searchContainerRef}>
                   <input
-                    id="search-bar"
+                    className={styles.searchBar}
                     placeholder="Search songs..."
                     onChange={handleSearchSongInput}
                     onFocus={showSearchResults}
                   />
                   {hasSearchResults && isSearchResultsVisible && (
-                    <ul id="search-results">
+                    <ul className={styles.searchResults}>
                       {searchedSongs?.map((song) => (
                         <li
                           onClick={() => {
@@ -132,56 +121,36 @@ function HomePage() {
                   )}
                 </div>
               </div>
-              <ul id="songs-container">
+              <ul className={styles.songsContainer}>
                 {bracketSongs.map((song) => (
-                  <li className="song" key={song.id}>
-                    <img className="song-picture" src={song.imageUrl} />
-                    <div className="song-title-and-artist">
-                      <p className="song-title">{song.title}</p>
-                      <p className="song-artist">{song.mainArtistName}</p>
+                  <li className={styles.song} key={song.id}>
+                    <img className={styles.songPicture} src={song.imageUrl} />
+                    <div className={styles.songTitleAndArtist}>
+                      <p className={styles.songTitle}>{song.title}</p>
+                      <p className={styles.songArtist}>{song.mainArtistName}</p>
                     </div>
                     <Button
                       onClick={() => removeSong(song)}
-                      className="song-x-button"
-                      size="small"
-                      variant="secondary"
+                      className={styles.songXButton}
+                      size="Small"
+                      variant="Secondary"
                     >
                       X
                     </Button>
                   </li>
                 ))}
               </ul>
-              <div id="bracket-creator-action-bar">
-                <Button variant="primary">Play</Button>
+              <div className={styles.bracketCreatorActionBar}>
+                <Button variant="Primary">Play</Button>
               </div>
-              <EditBracketModal
-                bracket={bracket}
-                onSwapSongs={onSwapSongs}
-                isOpen={isEditBracketModalOpen}
-                onClose={closeEditBracketModal}
-              />
             </div>
           )}
-          {selectedTab === Tabs.TOP_SONGS && (
-            <div className="bracket-creator">
-              <select>
-                <option value="">Test2</option>
-                <option value="">Hello2</option>
-                <option value="">Dead2</option>
-                <option value="">Fart2</option>
-              </select>
-            </div>
-          )}
-          {selectedTab === Tabs.PLAYLIST && (
-            <div className="bracket-creator">
-              <select>
-                <option value="">Test3</option>
-                <option value="">Hello3</option>
-                <option value="">Dead3</option>
-                <option value="">Fart3</option>
-              </select>
-            </div>
-          )}
+          {selectedTab === Tabs.TOP_SONGS && <div className={styles.bracketCreator}></div>}
+          <EditBracketModal
+            bracket={bracket}
+            isOpen={isEditBracketModalOpen}
+            onClose={closeEditBracketModal}
+          />
         </div>
       </MainLayout.Content>
     </MainLayout>

@@ -1,4 +1,4 @@
-#splash-page-content {
+.pageContent {
   background-color: black;
 
   display: flex;
@@ -12,7 +12,7 @@
   width: 100vw;
   width: 100dvw;
 
-  #logo-and-tagline-container {
+  .logoAndTaglineContainer {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -20,7 +20,7 @@
 
     width: 27rem;
 
-    #tagline {
+    .tagline {
       color: white;
 
       text-align: center;
@@ -28,12 +28,12 @@
       margin: 0;
     }
 
-    #madnessify-logo {
+    .madnessifyLogo {
       width: 85%;
     }
   }
 
-  #login-button {
+  .loginButton {
     width: 7rem;
 
     background-color: #e5e5e5;
@@ -56,14 +56,14 @@
 }
 
 @media screen and (max-width: 1200px) {
-  #splash-page-content {
+  .pageContent {
     flex-direction: column;
 
-    #logo-and-tagline-container {
+    .logoAndTaglineContainer {
       width: 80%;
     }
 
-    #login-button {
+    .loginButton {
       width: 30%;
     }
   }

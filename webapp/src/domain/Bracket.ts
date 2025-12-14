@@ -25,6 +25,23 @@ export interface Bracket {
 /**
  * OPERATIONS
  */
+function areBracketsEqual(bracketOne: Bracket, bracketTwo: Bracket) {
+  if (bracketOne.songsInBracket.length !== bracketTwo.songsInBracket.length) return false;
+
+  return bracketOne.matches.every((bracketOneMatch, i) => {
+    const bracketTwoMatch = bracketTwo.matches[i];
+
+    if (bracketOneMatch.winnerId !== bracketTwoMatch.winnerId) return false;
+    if (bracketOneMatch.byeMatch !== bracketTwoMatch.byeMatch) return false;
+    if (bracketOneMatch.byeMatch === true && bracketTwoMatch.byeMatch === true) {
+      if (bracketOneMatch.participants) {
+      }
+    }
+
+    return true;
+  });
+}
+
 export function isByeMatch(match: BracketMatch) {
   return !!match.byeMatch;
 }

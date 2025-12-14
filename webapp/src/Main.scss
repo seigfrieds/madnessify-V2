@@ -14,3 +14,8 @@ body {
 * {
   font-family: "Reem Kufi", sans-serif;
 }
+
+//for Base UI portals: https://base-ui.com/react/overview/quick-start#portals
+#root {
+  isolation: isolate;
+}

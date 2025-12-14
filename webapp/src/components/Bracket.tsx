@@ -1,5 +1,5 @@
 import { nearestHigherPowerOf2 } from "@/utils/math.ts";
-import "./Bracket.scss";
+import styles from "./Bracket.module.scss";
 import {
   isByeMatch,
   splitBracketIntoRounds,
@@ -10,7 +10,7 @@ import type { Song, Song_Id } from "@/domain/Song.ts";
 import { Fragment } from "react/jsx-runtime";
 
 const createByeMatchDom = () => {
-  return <div className="bye-match"></div>;
+  return <div className={styles.byeMatch}></div>;
 };
 
 const createSongMatchDom = (
@@ -22,23 +22,23 @@ const createSongMatchDom = (
   const songTwoIsWinner = songTwo?.id === winnerId;
 
   return (
-    <div className="match">
+    <div className={styles.match}>
       {songOne ? (
-        <div className={`song-${songOneIsWinner ? "winner" : "loser"}`}>
-          <img className="song-picture" src={songOne.imageUrl} />
-          <p className="song-title">{songOne.title}</p>
+        <div className={styles[`song${songOneIsWinner ? "Winner" : "Loser"}`]}>
+          <img className={styles.songPicture} src={songOne.imageUrl} />
+          <p className={styles.songTitle}>{songOne.title}</p>
         </div>
       ) : (
-        <div className="song-empty"></div>
+        <div className={styles.songEmpty}></div>
       )}
 
       {songTwo ? (
-        <div className={`song-${songTwoIsWinner ? "winner" : "loser"}`}>
-          <img className="song-picture" src={songTwo.imageUrl} />
-          <p className="song-title">{songTwo.title}</p>
+        <div className={styles[`song${songTwoIsWinner ? "Winner" : "Loser"}`]}>
+          <img className={styles.songPicture} src={songTwo.imageUrl} />
+          <p className={styles.songTitle}>{songTwo.title}</p>
         </div>
       ) : (
-        <div className="song-empty"></div>
+        <div className={styles.songEmpty}></div>
       )}
     </div>
   );
@@ -63,10 +63,10 @@ const createBracketDom = (bracket: BracketType) => {
     const regionSize = Math.max(2, nearestHigherPowerOf2(numSongs));
 
     return (
-      <div id="bracket-is-32-or-less-layout">
-        <div id={`region-${regionSize}`}>
+      <div className={styles.bracketIs32OrLessLayout}>
+        <div className={styles[`region${regionSize}`]}>
           {bracketRounds.map((roundMatches, roundIndex) => (
-            <div className="round" key={roundIndex}>
+            <div className={styles.round} key={roundIndex}>
               {roundMatches.map((match, matchIndex) => (
                 <Fragment key={matchIndex}>{createMatchDom(match)}</Fragment>
               ))}
@@ -89,27 +89,27 @@ const createBracketDom = (bracket: BracketType) => {
     const finalRoundMatches = bracketRounds.pop();
 
     return (
-      <div id="bracket-is-32-or-less-layout">
-        <div id="region-16">
+      <div className={styles.bracketIs32OrLessLayout}>
+        <div className={styles.region16}>
           {leftRounds.map((roundMatches, roundIndex) => (
-            <div className="round" key={roundIndex}>
+            <div className={styles.round} key={roundIndex}>
               {roundMatches.map((match, matchIndex) => (
                 <Fragment key={matchIndex}>{createMatchDom(match)}</Fragment>
               ))}
             </div>
           ))}
         </div>
-        <div id="region-16">
+        <div className={styles.region16}>
           {rightRounds.reverse().map((roundMatches, roundIndex) => (
-            <div className="round" key={roundIndex}>
+            <div className={styles.round} key={roundIndex}>
               {roundMatches.map((match, matchIndex) => (
                 <Fragment key={matchIndex}>{createMatchDom(match)}</Fragment>
               ))}
             </div>
           ))}
         </div>
-        <div id="final-match">
-          <div className="round">
+        <div className={styles.finalMatch}>
+          <div className={styles.round}>
             {finalRoundMatches?.map((match, matchIndex) => (
               <Fragment key={matchIndex}>{createMatchDom(match)}</Fragment>
             ))}
@@ -143,44 +143,44 @@ const createBracketDom = (bracket: BracketType) => {
 
     //64, 128, 256
     return (
-      <div id="bracket-is-over-64-layout">
-        <div id={`region-${regionSize}`}>
+      <div className={styles.bracketIsOver64Layout}>
+        <div className={styles[`region${regionSize}`]}>
           {topLeftRounds.map((roundMatches, roundIndex) => (
-            <div className="round" key={roundIndex}>
+            <div className={styles.round} key={roundIndex}>
               {roundMatches.map((match, matchIndex) => (
                 <Fragment key={matchIndex}>{createMatchDom(match)}</Fragment>
               ))}
             </div>
           ))}
         </div>
-        <div id={`region-${regionSize}`}>
+        <div className={styles[`region${regionSize}`]}>
           {topRightRounds.reverse().map((roundMatches, roundIndex) => (
-            <div className="round" key={roundIndex}>
+            <div className={styles.round} key={roundIndex}>
               {roundMatches.map((match, matchIndex) => (
                 <Fragment key={matchIndex}>{createMatchDom(match)}</Fragment>
               ))}
             </div>
           ))}
         </div>
-        <div id={`region-${regionSize}`}>
+        <div className={styles[`region${regionSize}`]}>
           {bottomLeftRounds.map((roundMatches, roundIndex) => (
-            <div className="round" key={roundIndex}>
+            <div className={styles.round} key={roundIndex}>
               {roundMatches.map((match, matchIndex) => (
                 <Fragment key={matchIndex}>{createMatchDom(match)}</Fragment>
               ))}
             </div>
           ))}
         </div>
-        <div id={`region-${regionSize}`}>
+        <div className={styles[`region${regionSize}`]}>
           {bottomRightRounds.reverse().map((roundMatches, roundIndex) => (
-            <div className="round" key={roundIndex}>
+            <div className={styles.round} key={roundIndex}>
               {roundMatches.map((match, matchIndex) => (
                 <Fragment key={matchIndex}>{createMatchDom(match)}</Fragment>
               ))}
             </div>
           ))}
         </div>
-        <div id="final-four">
+        <div className={styles.finalFour}>
           {createMatchDom(finalFourLeftRegionMatch)}
           {createMatchDom(finalMatch)}
           {createMatchDom(finalFourRightRegionMatch)}

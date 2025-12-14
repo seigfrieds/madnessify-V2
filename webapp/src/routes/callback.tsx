@@ -1,5 +1,5 @@
 import ErrorPage from "@/components/ErrorPage.tsx";
-import "./callback.scss";
+import styles from "./callback.module.scss";
 import { handleSpotifyCallbackAsync } from "@/modules/auth/login-to-spotify.ts";
 import { createFileRoute, Navigate } from "@tanstack/react-router";
 import { z } from "zod/v4";
@@ -18,7 +18,7 @@ export const Route = createFileRoute("/callback")({
     await handleSpotifyCallbackAsync(state, code, error);
   },
   pendingComponent: () => (
-    <main id="token-loading-screen">
+    <main className={styles.loadingScreen}>
       <Spinner />
     </main>
   ),

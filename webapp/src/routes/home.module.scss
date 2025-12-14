@@ -1,4 +1,4 @@
-#home-page-content {
+.pageContent {
   width: 100%;
 
   display: flex;
@@ -8,12 +8,12 @@
   justify-content: center;
   align-items: center;
 
-  #tabs {
+  .tabs {
     display: flex;
     gap: 0.5rem;
   }
 
-  .bracket-creator {
+  .bracketCreator {
     width: calc(100% - (2 * 1rem));
     height: 15rem;
 
@@ -28,23 +28,23 @@
 
     padding: 0.85rem;
 
-    #song-count-and-edit-bracket {
+    .songCountAndEditBracket {
       display: flex;
       flex-direction: row;
       justify-content: space-between;
 
-      #song-count {
+      .songCount {
         margin: 0;
 
         color: white;
       }
     }
 
-    #song-search {
+    .songSearch {
       display: flex;
       gap: 0.5rem;
 
-      #search-bar-and-results {
+      .searchBarAndResults {
         display: flex;
         flex-direction: column;
 
@@ -52,7 +52,7 @@
 
         flex-grow: 1;
 
-        #search-bar {
+        .searchBar {
           background: none;
 
           width: calc(100% - 2 * 0.4rem);
@@ -70,7 +70,7 @@
           color: rgba(255, 255, 255, 0.8);
         }
 
-        #search-results {
+        .searchResults {
           position: absolute;
 
           list-style-type: none;
@@ -101,7 +101,7 @@
       }
     }
 
-    #songs-container {
+    .songsContainer {
       display: flex;
       flex-direction: column;
       gap: 0.2rem;
@@ -116,12 +116,12 @@
         gap: 0.25rem;
         align-items: center;
 
-        .song-picture {
+        .songPicture {
           width: 1.75rem;
           height: 1.75rem;
         }
 
-        .song-title-and-artist {
+        .songTitleAndArtist {
           display: flex;
           flex-direction: column;
 
@@ -131,7 +131,7 @@
 
           overflow: hidden;
 
-          .song-title {
+          .songTitle {
             margin: 0;
 
             font-size: 0.8rem;
@@ -144,7 +144,7 @@
             text-overflow: ellipsis;
           }
 
-          .song-artist {
+          .songArtist {
             margin: 0;
 
             font-size: 0.55rem;
@@ -158,13 +158,13 @@
           }
         }
 
-        .song-x-button {
+        .songXButton {
           margin-left: auto;
         }
       }
     }
 
-    #bracket-creator-action-bar {
+    .bracketCreatorActionBar {
       display: flex;
       margin-left: auto;
       margin-top: auto;
