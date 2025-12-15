@@ -1,4 +1,5 @@
 import styles from "./Button.module.scss";
+import { Button } from "@base-ui/react";
 
 interface Props {
   onClick?: () => void;
@@ -8,7 +9,7 @@ interface Props {
   className?: string;
 }
 
-function Button({
+function MadnessifyButton({
   onClick,
   children,
   variant = "Primary",
@@ -16,13 +17,13 @@ function Button({
   className = "",
 }: Props) {
   return (
-    <button
+    <Button
       onClick={onClick}
       className={styles[`button${variant}`] + " " + styles[`size${size}`] + " " + `${className}`}
     >
       {children}
-    </button>
+    </Button>
   );
 }
 
-export default Button;
+export default MadnessifyButton;
