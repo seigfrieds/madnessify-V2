@@ -1,4 +1,5 @@
-import "./ErrorPage.scss";
+import Button from "./Button.tsx";
+import styles from "./ErrorPage.module.scss";
 import { useRouter } from "@tanstack/react-router";
 
 interface Props {
@@ -14,15 +15,15 @@ function ErrorPage({ redirectRoute = "/home", redirectText = "Go to Homepage" }:
   };
 
   return (
-    <main id="error-page-content">
-      <div id="container">
+    <main className={styles.pageContent}>
+      <div className={styles.container}>
         <div>
-          <h1 id="header">Something went wrong!</h1>
-          <p id="subtitle">There was a problem processing your request. Please try again.</p>
+          <h1 className={styles.header}>Something went wrong!</h1>
+          <p className={styles.subtitle}>
+            There was a problem processing your request. Please try again.
+          </p>
         </div>
-        <button id="redirect-button" onClick={redirectUser} type="button">
-          {redirectText}
-        </button>
+        <Button onClick={redirectUser}>{redirectText}</Button>
       </div>
     </main>
   );

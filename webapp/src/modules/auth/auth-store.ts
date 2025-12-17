@@ -2,9 +2,9 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 interface State {
-  spotifyAccessToken: string;
-  csrfToken: string;
-  codeVerifier: string;
+  spotifyAccessToken: string | null;
+  csrfToken: string | null;
+  codeVerifier: string | null;
 }
 
 interface Actions {
@@ -16,9 +16,9 @@ interface Actions {
 const useAuthStoreInternal = create<State & Actions>()(
   persist(
     (set) => ({
-      spotifyAccessToken: "",
-      csrfToken: "",
-      codeVerifier: "",
+      spotifyAccessToken: null,
+      csrfToken: null,
+      codeVerifier: null,
       setSpotifyAccessToken: (newToken: string) => set({ spotifyAccessToken: newToken }),
       setCsrfToken: (newCsrfToken: string) => set({ csrfToken: newCsrfToken }),
       setCodeVerifier: (newCodeVerifier: string) => set({ codeVerifier: newCodeVerifier }),

@@ -43,11 +43,15 @@ export const createSpotifyLoginUrlAsync = async () => {
  * handleSpotifyCallbackAsync
  */
 export const validateSpotifyRedirect = (
-  csrfToken: string,
   state: string,
+  csrfToken?: string | null,
   code?: string,
   error?: string,
 ) => {
+  if (!csrfToken) {
+    throw Error();
+  }
+
   if (state !== csrfToken) {
     throw Error();
   }
@@ -58,7 +62,7 @@ export const validateSpotifyRedirect = (
 };
 
 export const handleSpotifyCallbackAsync = async (state: string, code?: string, error?: string) => {
-  validateSpotifyRedirect(authStore.getCsrfToken(), state, code, error);
+  validateSpotifyRedirect(state, authStore.getCsrfToken(), code, error);
 
   const accessToken = await getSpotifyAccessTokenAsync(code as string);
   authStore.setSpotifyAccessToken(accessToken);

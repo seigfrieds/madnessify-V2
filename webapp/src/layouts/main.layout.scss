@@ -1,0 +1,65 @@
+#main-layout {
+  //the width of the actual content
+  --main-layout-content-width: min(35rem, 100%);
+
+  //expected total side margins
+  --total-side-margin: 2.5rem;
+
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+
+  align-items: center;
+
+  margin-left: calc(var(--total-side-margin) / 2);
+  margin-right: calc(var(--total-side-margin) / 2);
+
+  min-height: 100vh;
+  min-height: 100dvh;
+  width: calc(100vw - var(--total-side-margin));
+  width: calc(100dvw - var(--total-side-margin));
+
+  main {
+    width: var(--main-layout-content-width);
+
+    margin-bottom: 1.25rem;
+  }
+
+  //styling for the header bar. lots of overhead because it needs to be 100vw
+  header {
+    height: 1.75rem;
+    width: 100vw;
+    width: 100dvw;
+
+    display: flex;
+    justify-content: center;
+
+    padding-top: 0.125rem;
+    padding-bottom: 0.125rem;
+
+    background-color: #333333;
+
+    border-bottom: 0.085rem solid #2c2c2c;
+
+    //Actual content of the header
+    #header-content {
+      width: var(--main-layout-content-width);
+      height: 100%;
+
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      margin-left: calc(var(--total-side-margin) / 2);
+      margin-right: calc(var(--total-side-margin) / 2);
+
+      color: white;
+
+      #header-profile-picture {
+        height: 80%;
+
+        border-radius: 1rem;
+      }
+    }
+  }
+}

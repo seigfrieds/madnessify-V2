@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import "./index.scss";
+import styles from "./index.module.scss";
 import { createSpotifyLoginUrlAsync } from "@/modules/auth/login-to-spotify.ts";
 import MadnessifyLogo from "@/assets/MadnessifyLogo.png";
 
@@ -13,12 +13,12 @@ function SplashPage() {
   };
 
   return (
-    <main id="splash-page-content">
-      <div id="logo-and-tagline-container">
-        <img id="madnessify-logo" src={MadnessifyLogo} alt="Madnessify Logo" />
-        <p id="tagline">Create and play tournaments with your favorite songs</p>
+    <main className={styles.pageContent}>
+      <div className={styles.logoAndTaglineContainer}>
+        <img className={styles.madnessifyLogo} src={MadnessifyLogo} alt="Madnessify Logo" />
+        <p className={styles.tagline}>Create and play tournaments with your favorite songs</p>
       </div>
-      <button id="login-button" onClick={navigateToSpotifyLoginAsync} type="button">
+      <button className={styles.loginButton} onClick={navigateToSpotifyLoginAsync} type="button">
         Login
       </button>
     </main>

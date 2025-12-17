@@ -6,6 +6,7 @@ import { createRoot } from "react-dom/client";
 import ErrorBoundary from "./components/ErrorBoundary.tsx";
 import Config from "./config.ts";
 import { routeTree } from "./routeTree.gen.ts";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 Sentry.init({
   dsn: Config.SENTRY_DSN,
@@ -16,13 +17,16 @@ Sentry.init({
   tracePropagationTargets: ["localhost", Config.API_URL],
 });
 
-const router = createRouter({ routeTree });
-
+//configure router
+export const router = createRouter({ routeTree });
 declare module "@tanstack/react-router" {
   interface Register {
     router: typeof router;
   }
 }
+
+//configure query client
+const queryClient = new QueryClient();
 
 const root = document.getElementById("root");
 if (!root) {
@@ -32,7 +36,9 @@ if (!root) {
 createRoot(root).render(
   <StrictMode>
     <ErrorBoundary fallback={<h1>Something went terribly wrong...</h1>}>
-      <RouterProvider router={router} />
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+      </QueryClientProvider>
     </ErrorBoundary>
   </StrictMode>,
 );

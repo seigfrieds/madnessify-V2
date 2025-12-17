@@ -1,0 +1,124 @@
+@mixin match() {
+  .byeMatch {
+    height: 2rem;
+    width: 5.8rem;
+  }
+
+  .match {
+    .songEmpty {
+      width: 5.8rem;
+      height: 1rem;
+
+      background-color: rgba(217, 217, 217, 0.1);
+    }
+
+    .song {
+      display: flex;
+      gap: 0.25rem;
+
+      width: 5.8rem;
+      height: 1rem;
+
+      background-color: var(--song-background);
+
+      .songPicture {
+        width: 1rem;
+        height: 1rem;
+      }
+
+      .songTitle {
+        margin: 0;
+
+        font-size: 0.5rem;
+
+        line-height: 1rem;
+
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+
+        color: var(--song-text-color);
+      }
+    }
+
+    .songWinner {
+      @extend .song;
+
+      --song-background: rgba(217, 217, 217, 0.25);
+      --song-text-color: white;
+    }
+
+    .songLoser {
+      @extend .song;
+
+      --song-background: rgba(217, 217, 217, 0.1);
+      --song-text-color: rgba(255, 255, 255, 0.5);
+    }
+  }
+}
+
+@mixin region-size($numParticipants) {
+  .region#{$numParticipants} {
+    height: calc(#{$numParticipants} * (1rem + 0.5rem));
+
+    display: flex;
+
+    gap: 0.5rem;
+
+    .round {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+    }
+  }
+}
+
+.bracketIs32OrLessLayout {
+  display: flex;
+
+  width: min-content;
+
+  gap: 1rem;
+
+  position: relative;
+
+  .finalMatch {
+    position: absolute;
+
+    top: 38%;
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+  }
+}
+
+.bracketIsOver64Layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 2rem 1fr;
+
+  overflow: auto;
+
+  width: min-content;
+  column-gap: 1rem;
+
+  justify-items: center;
+
+  .finalFour {
+    grid-column: 1 / span 2;
+
+    grid-row: 2 / span 1;
+
+    display: flex;
+    gap: 1rem;
+  }
+}
+
+@include match();
+@include region-size(1);
+@include region-size(2);
+@include region-size(4);
+@include region-size(8);
+@include region-size(16);
+@include region-size(32);
+@include region-size(64);
